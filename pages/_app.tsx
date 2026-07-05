@@ -20,18 +20,19 @@ import { Footer } from '@components/common/Footer'
 import { useRouter } from 'next/dist/client/router'
 import Head from 'next/head'
 import axios from 'axios'
+import NextApp from 'next/app'
 import { font, fontsStyles } from '@styles/fonts'
 import { getCountryBasedTheme } from '@utils/api/location'
 import { usePersistLocale } from '@utils/hooks/use-persist-locale'
 import useTranslation from 'next-translate/useTranslation'
 import { setLanguageHeader } from '@utils/api'
+import { getSettings, defaultSettings } from '@utils/api/settings'
 import { QueryClient, QueryClientProvider } from 'react-query'
 
 axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_URL
 
 const ThemeAutoSwitcher = ({ children }) => {
   const { setTheme } = useTheme()
-  const [render, setRender] = useState(false)
 
   useEffect(() => {
     ;(async () => {
@@ -53,7 +54,6 @@ const ThemeAutoSwitcher = ({ children }) => {
       }
 
       setTheme(preferredTheme == 'dark' ? 'dark' : 'light')
-      setRender(true)
     })()
 
     const handleThemeChange = (e) => {
@@ -79,7 +79,12 @@ const ThemeAutoSwitcher = ({ children }) => {
     }
   }, [])
 
-  return <>{render && children}</>
+  // Раніше тут був гейт `{render && children}`, де render ставав true лише
+  // після client-side useEffect — тобто на сервері (і для будь-якого
+  // безJS-клієнта: AI-краулери, curl тощо) весь вміст сайту не рендерився
+  // ВЗАГАЛІ. next-themes вже сам вставляє inline-скрипт у <head>, який
+  // виставляє клас теми ДО гідратації React — тому цей гейт був зайвим.
+  return <>{children}</>
 }
 
 const globalStyles = globalCss({
@@ -128,7 +133,7 @@ const queryClient = new QueryClient({
   }
 })
 
-function App({ Component, pageProps }) {
+function App({ Component, pageProps, settings }) {
   globalStyles()
   const { asPath, pathname } = useRouter()
   const [isMenuOpened, setIsMenuOpened] = useState(false)
@@ -169,7 +174,7 @@ function App({ Component, pageProps }) {
     setIsMenuOpened(false)
   }, [asPath])
 
-  const title = useMemo(() => {
+  const defaultTitle = useMemo(() => {
     const routeKey = pathname.split('/')[1] || ''
     const routeTitle = t(`title.${routeKey}`, null, { fallback: '' })
 
@@ -178,12 +183,28 @@ function App({ Component, pageProps }) {
     return t('title.base', { title: routeTitle })
   }, [t, pathname])
 
+  // Next.js не дедуплікує <title>/<meta> між кількома <Head> на дереві —
+  // у документі лишається лише ПЕРШИЙ <title> (тобто цей, з _app), а власні
+  // <title> на окремих сторінках мовчки ігноруються. Тому єдине джерело
+  // правди для title/description/og — тут, а сторінки передають свій SEO
+  // через pageProps.seo, а не через власний <Head><title>.
+  const seo = pageProps?.seo || {}
+  const title = seo.title || defaultTitle
+
   return (
     <>
       <Head>
         <meta name="theme-color" content="#ffffff" />
         <meta name="viewport" content="width=device-width" />
         <title>{title}</title>
+        {seo.description && (
+          <meta name="description" content={seo.description} />
+        )}
+        {title && <meta property="og:title" content={title} />}
+        {seo.description && (
+          <meta property="og:description" content={seo.description} />
+        )}
+        {seo.ogImage && <meta property="og:image" content={seo.ogImage} />}
       </Head>
       <QueryClientProvider client={queryClient}>
         <ThemeProvider
@@ -204,7 +225,7 @@ function App({ Component, pageProps }) {
               <Menu isOpened={isMenuOpened} />
               <Component {...pageProps} />
               <div ref={footerRef}>
-                <Footer className={footer()} />
+                <Footer settings={settings} className={footer()} />
               </div>
             </ThemeAutoSwitcher>
           </LegacyThemeProvider>
@@ -225,5 +246,15 @@ const footer = css({
     mt: 45
   }
 })
+
+App.getInitialProps = async (appContext) => {
+  const appProps = await NextApp.getInitialProps(appContext)
+
+  const settings = await getSettings({ ctx: appContext.ctx }).catch(
+    () => defaultSettings
+  )
+
+  return { ...appProps, settings }
+}
 
 export default App

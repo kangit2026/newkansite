@@ -81,6 +81,7 @@ const Articles: FC<ArticlesProps> = ({
                 {news.map(
                   ({
                     id,
+                    slug,
                     description,
                     date,
                     tags,
@@ -88,12 +89,13 @@ const Articles: FC<ArticlesProps> = ({
                     link,
                     image,
                     bigPicture,
-                    nextId,
-                    prevId
+                    nextSlug,
+                    prevSlug
                   }) => (
                     <Article
                       key={id}
                       id={id}
+                      slug={slug}
                       description={description}
                       date={date}
                       tags={tags}
@@ -101,8 +103,8 @@ const Articles: FC<ArticlesProps> = ({
                       link={link}
                       image={image}
                       bigPicture={bigPicture}
-                      nextId={nextId}
-                      prevId={prevId}
+                      nextSlug={nextSlug}
+                      prevSlug={prevSlug}
                     />
                   )
                 )}
@@ -114,6 +116,7 @@ const Articles: FC<ArticlesProps> = ({
                   {featuredNews.map(
                     ({
                       id,
+                      slug,
                       description,
                       date,
                       tags,
@@ -121,12 +124,13 @@ const Articles: FC<ArticlesProps> = ({
                       link,
                       image,
                       bigPicture,
-                      nextId,
-                      prevId
+                      nextSlug,
+                      prevSlug
                     }) => (
                       <Article
                         key={id}
                         id={id}
+                        slug={slug}
                         description={description}
                         date={date}
                         tags={tags}
@@ -134,8 +138,8 @@ const Articles: FC<ArticlesProps> = ({
                         link={link}
                         image={image}
                         bigPicture={bigPicture}
-                        nextId={nextId}
-                        prevId={prevId}
+                        nextSlug={nextSlug}
+                        prevSlug={prevSlug}
                       />
                     )
                   )}

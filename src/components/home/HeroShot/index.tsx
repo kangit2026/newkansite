@@ -6,8 +6,19 @@ import HoveredComponent from '@components/common/HoveredComponent'
 import { css, styled } from 'stitches.config'
 import useTranslation from 'next-translate/useTranslation'
 
-export const HeroShot: FC = () => {
+export type HeroShotProps = {
+  motto?: string | null
+  awardsTitle?: string | null
+  awards?: { value: number | null; description: string | null }[]
+}
+
+export const HeroShot: FC<HeroShotProps> = ({
+  motto,
+  awardsTitle,
+  awards
+}) => {
   const { t } = useTranslation('home')
+  const resolvedMotto = motto || t('motto')
 
   return (
     <Wrapper>
@@ -25,12 +36,16 @@ export const HeroShot: FC = () => {
             KAN Development
             <span className="d-none d-md-inline">
               {' '}
-              / {t('motto')}
+              / {resolvedMotto}
             </span>
           </Heading>
         </Col>
       </Grid>
-      <Features />
+      <Features
+        motto={resolvedMotto}
+        awardsTitle={awardsTitle}
+        awards={awards}
+      />
     </Wrapper>
   )
 }

@@ -1,0 +1,17 @@
+[Unit]
+Description=Kansite Next.js Frontend (newkansite.pp.ua)
+After=network.target
+
+[Service]
+Type=simple
+User=gsa
+Group=www-data
+WorkingDirectory=/var/www/projects/kansite/Frontend
+Environment=NODE_ENV=production
+Environment=PORT=3000
+ExecStart=/usr/bin/npm run start
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

@@ -16,12 +16,13 @@ export const HeaderNewsItem: FC<{ details: NewsInfo }> = ({
     tags,
     image,
     externalLink,
-    prevId,
-    nextId
+    prevSlug,
+    nextSlug
   }:any = details
-  // const prevId = id > 0 ? id - 1 : null
-  // const nextId = id + 1
-  console.log('det', details)
+
+  const prevHref = prevSlug ? `/news/${prevSlug}` : undefined
+  const nextHref = nextSlug ? `/news/${nextSlug}` : undefined
+
   return (
     <Wrapper>
       <Grid className={undefined} >
@@ -34,25 +35,29 @@ export const HeaderNewsItem: FC<{ details: NewsInfo }> = ({
           </Component>
         </Col>
         <Col className={undefined}  xs={{ span: 10, start: 2 }} md={{ span: 8, start: 3 }}>
-          <ArrowLink
-            href={`${prevId}`}
-            className={`${arrowLeft({
-              tablet: true
-            })} d-none d-md-flex`}
-          />
+          {prevHref && (
+            <ArrowLink
+              href={prevHref}
+              className={`${arrowLeft({
+                tablet: true
+              })} d-none d-md-flex`}
+            />
+          )}
           <TextHeader>{title}</TextHeader>
-          <ArrowLink
-            href={`${nextId}`}
-            className={`${arrowRight({
-              tablet: true
-            })} d-none d-md-flex`}
-          />
+          {nextHref && (
+            <ArrowLink
+              href={nextHref}
+              className={`${arrowRight({
+                tablet: true
+              })} d-none d-md-flex`}
+            />
+          )}
         </Col>
         <Col   xs={{ span: 1, start: 10 }} className="d-md-none">
-          <ArrowLink href={`${prevId}`} className={arrowLeft()} />
+          {prevHref && <ArrowLink href={prevHref} className={arrowLeft()} />}
         </Col>
         <Col   xs={{ span: 1, start: 11 }} className="d-md-none">
-          <ArrowLink href={`${nextId}`} className={arrowRight()} />
+          {nextHref && <ArrowLink href={nextHref} className={arrowRight()} />}
         </Col>
         <ContentNews
           title={title}

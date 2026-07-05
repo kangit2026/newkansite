@@ -1,11 +1,11 @@
 import { format, parseISO } from 'date-fns'
 import { get } from '.'
-import getValue from 'lodash-es/get'
 import isEmpty from 'lodash-es/isEmpty'
 import queryString from 'query-string'
 
 export type NewsInfo = {
   id: number
+  slug: string
   image: string
   date: string
   link: string
@@ -14,8 +14,8 @@ export type NewsInfo = {
   description: string
   tags: string[]
   bigPicture: boolean
-  nextId: number
-  prevId: number
+  nextSlug: string | null
+  prevSlug: string | null
 }
 
 export enum NewsType {
@@ -70,10 +70,10 @@ export const getNews = ({
   })
     .then(({ data }) => {
       return {
-        data: (data?.value.value || [])
+        data: (data?.data || [])
           .map(mapFromBackendNews)
           .filter((i) => i != null),
-        total: data?.value.total || 0
+        total: data?.meta?.total || 0
       }
     })
     .catch((_) => ({
@@ -82,31 +82,44 @@ export const getNews = ({
     }))
 }
 
-export const getNewsById = ({ id, ctx = {} }) => {
-  // console.log('getting...')
-  return get({
-    url: `/news/${id}`,
-    ctx
-  }).then(({ data }) => {
-    console.log('GET', data)
-    const details = data?.value || {}
+export type NewsBySlugResult = {
+  details?: Partial<NewsInfo>
+  redirectToSlug?: string
+}
 
-    if (isEmpty(details)) return {}
-    return mapFromBackendNews(data?.value || {})
+export const getNewsBySlug = ({
+  slug,
+  ctx = {}
+}): Promise<NewsBySlugResult> => {
+  return get({
+    url: `/news/${slug}`,
+    ctx
   })
+    .then(({ data }) => {
+      if (data?.redirect?.slug) {
+        return { redirectToSlug: data.redirect.slug }
+      }
+
+      const details = data?.data || {}
+
+      if (isEmpty(details)) return { details: {} }
+      return { details: mapFromBackendNews(details) || {} }
+    })
+    .catch((_) => ({ details: {} }))
 }
 
 export const mapFromBackendNews = ({
   id,
+  slug,
   date,
-  pictureUrl,
+  picture,
   tags,
   text,
   title,
-  link,
-  bigPicture,
-  nextId = null,
-  prevId = null
+  external_link,
+  big_picture,
+  next_slug = null,
+  prev_slug = null
 }) => {
   try {
     let formattedDate = ''
@@ -117,16 +130,17 @@ export const mapFromBackendNews = ({
 
     return {
       id,
+      slug,
       date: formattedDate,
       title,
-      link: `/news/${id}`,
-      externalLink: link || '',
-      tags: (tags || []).map((v) => getValue(v, 'name', null)),
+      link: `/news/${slug}`,
+      externalLink: external_link || '',
+      tags: tags || [],
       description: text,
-      image: pictureUrl,
-      bigPicture,
-      nextId,
-      prevId
+      image: picture,
+      bigPicture: big_picture,
+      nextSlug: next_slug,
+      prevSlug: prev_slug
     }
   } catch (e) {
     console.error(e)

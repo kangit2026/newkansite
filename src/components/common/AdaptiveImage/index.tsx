@@ -93,15 +93,20 @@ export const AdaptiveImage = forwardRef<
           return
         }
 
+        // На сервері next-themes ще не знає тему (resolvedTheme === undefined,
+        // визначається лише в браузері) — раніше цей компонент ніколи не
+        // рендерився на сервері, тож це не спливало. Дефолтимось на 'light'.
+        const themeKey = resolvedTheme || 'light'
+
         const fileSrc =
           themingMode == ThemingMode.File
-            ? src[resolvedTheme].default
-            : src.default
+            ? src?.[themeKey]?.default
+            : src?.default
 
         const additionalInfo =
           browser.name == 'safari' ? `?${Math.random()}` : ''
 
-        sources[bp] = `${fileSrc}${additionalInfo}#${resolvedTheme}`
+        sources[bp] = `${fileSrc}${additionalInfo}#${themeKey}`
       })
 
       return sources

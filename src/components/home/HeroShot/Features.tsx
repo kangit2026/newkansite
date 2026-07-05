@@ -8,24 +8,7 @@ import useTranslation from 'next-translate/useTranslation'
 import { ScrollAnchor } from '@components/common/ScrollAnchor'
 import { scrollToElement } from '@utils/helpers/animations'
 
-const awards = [
-  {
-    amount: 'first.value',
-    description: 'first.description'
-  },
-  {
-    amount: 'second.value',
-    description: 'second.description'
-  },
-  {
-    amount: 'third.value',
-    description: 'third.description'
-  },
-  {
-    amount: 'fourth.value',
-    description: 'fourth.description'
-  }
-]
+const awardKeys = ['first', 'second', 'third', 'fourth']
 
 const Award: FC<{ amount: number | string; description: string }> = ({
   amount,
@@ -44,19 +27,39 @@ const Award: FC<{ amount: number | string; description: string }> = ({
   )
 }
 
-export const Features: FC = () => {
+export type FeaturesProps = {
+  motto?: string | null
+  awardsTitle?: string | null
+  awards?: { value: number | null; description: string | null }[]
+}
+
+export const Features: FC<FeaturesProps> = ({
+  motto,
+  awardsTitle,
+  awards
+}) => {
   const { t } = useTranslation('home')
   const { resolvedTheme } = useTheme()
   const anchorRef = useRef(null)
 
+  const resolvedMotto = motto || t('motto')
+  const resolvedAwardsTitle = awardsTitle || t('awards.title')
+  const resolvedAwards =
+    awards && awards.length > 0
+      ? awards
+      : awardKeys.map((key) => ({
+          value: t(`awards.${key}.value`),
+          description: t(`awards.${key}.description`)
+        }))
+
   return (
     <Wrapper>
       <Grid className={undefined} >
-        <Col 
+        <Col
           xs={{ span: 10, start: 2 }}
           className="d-flex flex-column align-items-center align-items-md-start"
         >
-          <Motto>{t('motto')}</Motto>
+          <Motto>{resolvedMotto}</Motto>
           <Arrow
             onClick={() => {
               scrollToElement(anchorRef.current)
@@ -79,15 +82,15 @@ export const Features: FC = () => {
                 }
               }}
             />
-            <AwardsTitle>{t('awards.title')}</AwardsTitle>
+            <AwardsTitle>{resolvedAwardsTitle}</AwardsTitle>
           </Col>
           <Col className={undefined}  xs={{ span: 10, start: 2 }}>
             <AwardsList>
-              {awards.map(({ amount, description }) => (
+              {resolvedAwards.map(({ value, description }, i) => (
                 <Award
-                  key={description}
-                  amount={t(`awards.${amount}`)}
-                  description={t(`awards.${description}`)}
+                  key={`${i}-${description}`}
+                  amount={value}
+                  description={description}
                 />
               ))}
             </AwardsList>

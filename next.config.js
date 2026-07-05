@@ -38,7 +38,7 @@ const nextConfig = {
   images: {
     deviceSizes,
     disableStaticImages: true,
-    domains: ['kan.bananza.agency']
+    domains: ['kan.bananza.agency', 'newkansite.pp.ua', 'www.newkansite.pp.ua']
   },
   webpack(config) {
     config.module.rules.push({

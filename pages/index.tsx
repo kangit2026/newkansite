@@ -18,13 +18,22 @@ import {
   getProjectsCategories
 } from '@utils/api/projects'
 import { getPartnership } from '@utils/api/project'
+import { getSettings, SiteSettings } from '@utils/api/settings'
 
 const parsePartnerships = async () => {
   const data = await getPartnership()
   return data
 }
 
-export default function Home({ news, projects }) {
+export default function Home({
+  news,
+  projects,
+  home
+}: {
+  news: any
+  projects: any
+  home?: SiteSettings['home']
+}) {
   const [partnerships, setPartnerships] = useState([])
 
   useEffect(() => {
@@ -58,7 +67,11 @@ export default function Home({ news, projects }) {
 
   return (
     <div>
-      <HeroShot />
+      <HeroShot
+        motto={home?.motto}
+        awardsTitle={home?.awardsTitle}
+        awards={home?.awards}
+      />
       {projects.length > 0 && (
         <Section
           title={t('common:projects.title')}
@@ -121,15 +134,22 @@ export default function Home({ news, projects }) {
 }
 
 export async function getServerSideProps(ctx) {
-  const [news, projects] = await Promise.all([
+  const [news, projects, settings] = await Promise.all([
     getNews({ ctx }),
-    getFeaturedProjects({ ctx })
+    getFeaturedProjects({ ctx }),
+    getSettings({ ctx })
   ])
 
   return {
     props: {
       news: news?.data,
-      projects
+      projects,
+      home: settings?.home || null,
+      seo: {
+        title: settings?.home?.metaTitle || null,
+        description: settings?.home?.metaDescription || null,
+        ogImage: settings?.home?.ogImage || null
+      }
     }
   }
 }

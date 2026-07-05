@@ -9,12 +9,16 @@ import useTranslation from 'next-translate/useTranslation'
 import { Advertisement } from '@components/home/Advertisement'
 import { useRouter } from 'next/router'
 import TelegramIcon from '@assets/social/telegram.svg?svgr'
+import { SiteSettings, defaultSettings } from '@utils/api/settings'
 
-export type FooterProps = HTMLAttributes<HTMLDivElement>
+export type FooterProps = HTMLAttributes<HTMLDivElement> & {
+  settings?: SiteSettings
+}
 
-export const Footer: FC<FooterProps> = ({ ...props }) => {
+export const Footer: FC<FooterProps> = ({ settings, ...props }) => {
   const router = useRouter()
   const { t } = useTranslation('common')
+  const s = settings || defaultSettings
 
   return (
     <>
@@ -36,7 +40,7 @@ export const Footer: FC<FooterProps> = ({ ...props }) => {
       <Grid className={props?.className||undefined} {...props}>
         <Col className={undefined}  xs={{ span: 10, start: 2 }}>
           <TextChatbot>
-            Чат-бот для швидкого звʼязку: <ChatbotButton onClick={() => window.open('https://t.me/kan_chatbot', '_blank')}>
+            Чат-бот для швидкого звʼязку: <ChatbotButton onClick={() => s.telegramChatLink && window.open(s.telegramChatLink, '_blank')}>
               <IconWrapper>
                 <TelegramIcon />
               </IconWrapper>
@@ -44,21 +48,21 @@ export const Footer: FC<FooterProps> = ({ ...props }) => {
           </TextChatbot>
         </Col>
         <Col className={undefined}  xs={{ span: 10, start: 2 }}>
-          <TextEmail>office@kandevelopment.com</TextEmail>
+          <TextEmail>{s.email}</TextEmail>
         </Col>
         <Col className={undefined}  xs={{ span: 10, start: 2 }} lg={{ span: 5, start: 2 }}>
-          <HeaderFooter />
+          <HeaderFooter phone={s.phone} />
           <ListContent />
         </Col>
         <Col className={undefined}  xs={{ span: 10, start: 2 }} lg={{ span: 4, start: 8 }}>
           <RenewalContent />
         </Col>
         <Col className={undefined}  xs={{ span: 10, start: 2 }} lg={{ span: 2 }}>
-          <FooterIcons />
+          <FooterIcons social={s.social} />
         </Col>
         <Col className={undefined}  xs={{ span: 10, start: 2 }} lg={{ span: 4 }}>
           <TextContent>
-            2025 &nbsp;{t('footer.copyright')}
+            {s.copyrightYear} &nbsp;{s.copyrightText}
           </TextContent>
         </Col>
       </Grid>

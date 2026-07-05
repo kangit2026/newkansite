@@ -2,10 +2,14 @@ import Image from 'next/image'
 import React, { FC } from 'react'
 import { styled } from 'stitches.config'
 
-export const HeaderFooter: FC = () => {
+export type HeaderFooterProps = {
+  phone?: string | null
+}
+
+export const HeaderFooter: FC<HeaderFooterProps> = ({ phone }) => {
   return (
     <Content>
-      <TextTel>+38 (044) 247 57 48</TextTel>
+      <TextTel>{phone}</TextTel>
     </Content>
   )
 }

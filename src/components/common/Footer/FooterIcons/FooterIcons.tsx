@@ -2,12 +2,23 @@ import React, { FC } from 'react'
 import { styled } from 'stitches.config'
 import { SocialButton } from '@components/common/SocialButton'
 import { socialLinks } from '@utils/constants/social'
+import { SiteSettings } from '@utils/api/settings'
 
-export const FooterIcons: FC = () => {
+export type FooterIconsProps = {
+  social?: SiteSettings['social']
+}
+
+export const FooterIcons: FC<FooterIconsProps> = ({ social }) => {
+  // Посилання беремо з налаштувань сайту (адмінка), іконки/назви лишаються статичними
+  const resolvedLinks = socialLinks.map((item) => ({
+    ...item,
+    link: (social as any)?.[item.id] || item.link
+  }))
+
   // Первые 4 соцсети (Instagram, YouTube, Facebook, Pinterest)
-  const firstRow = socialLinks.slice(0, 4)
+  const firstRow = resolvedLinks.slice(0, 4)
   // Telegram отдельно
-  const telegram = socialLinks.find(item => item.id === 'telegram')
+  const telegram = resolvedLinks.find(item => item.id === 'telegram')
 
   return (
     <Content>

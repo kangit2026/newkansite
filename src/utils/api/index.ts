@@ -14,12 +14,32 @@ export const mapToBackendLocale = (locale) => {
 
   if (locales?.includes(locale)) return locale
 
-  return 'en'
+  // Дефолтна локаль сайту — uk (див. i18n.js defaultLocale). Якщо мову не
+  // вдалось визначити з cookie/Accept-Language (немає збігу з uk/en —
+  // типово для перших відвідувань, пошукових ботів без мовних заголовків
+  // тощо), бекенд має віддавати той самий контент, що й дефолтна сторінка,
+  // а не англійську мовчки.
+  return 'ua'
 }
 
 export const setLocale = (ctx) => {
-  const cookiesLocale = ctx.req?.cookies
-  const headersLocale = ctx.req?.headers['accept-language']
+  // Next.js вже сам коректно визначає локаль для кожного SSR-запиту
+  // (з префіксу /en/..., з cookie NEXT_LOCALE або з Accept-Language —
+  // залежно від налаштувань i18n) і кладе результат у ctx.locale. Довіряємо
+  // саме йому, а не парсимо cookie/заголовки вручну ще раз — інакше
+  // результати можуть розійтись (напр. прямий захід на /en/... без cookie
+  // раніше все одно повертав дані бекенду українською).
+  if (ctx?.locale) {
+    setLanguageHeader(ctx.locale)
+    return
+  }
+
+  // Під час білда Next.js викликає App.getInitialProps і для сторінок без
+  // getServerSideProps (статична генерація) — тоді ctx.req ще не існує.
+  if (!ctx?.req) return
+
+  const cookiesLocale = ctx.req?.cookies || {}
+  const headersLocale = ctx.req?.headers?.['accept-language'] || ''
 
   let locale = ''
   if (
