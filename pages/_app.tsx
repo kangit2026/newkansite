@@ -1,0 +1,229 @@
+import '@ui/styles.css'
+
+import '@styles/slider.scss'
+
+import '@styles/main.scss'
+
+import { ThemeProvider, useTheme } from 'next-themes'
+import { ThemeProvider as LegacyThemeProvider } from '@ui'
+import {
+  css,
+  darkTheme,
+  globalCss,
+  lightTheme
+} from 'stitches.config'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
+import { themeConfig } from '@utils/constants'
+import { Header } from '@components/common/Header'
+import { Menu } from '@components/common/Menu'
+import { Footer } from '@components/common/Footer'
+import { useRouter } from 'next/dist/client/router'
+import Head from 'next/head'
+import axios from 'axios'
+import { font, fontsStyles } from '@styles/fonts'
+import { getCountryBasedTheme } from '@utils/api/location'
+import { usePersistLocale } from '@utils/hooks/use-persist-locale'
+import useTranslation from 'next-translate/useTranslation'
+import { setLanguageHeader } from '@utils/api'
+import { QueryClient, QueryClientProvider } from 'react-query'
+
+axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_URL
+
+const ThemeAutoSwitcher = ({ children }) => {
+  const { setTheme } = useTheme()
+  const [render, setRender] = useState(false)
+
+  useEffect(() => {
+    ;(async () => {
+      const cachedTheme = localStorage.getItem('theme')
+
+      let preferredTheme = null
+      if (!cachedTheme) {
+        if (
+          window.matchMedia &&
+          window.matchMedia('(prefers-color-scheme: dark)').matches
+        ) {
+          preferredTheme = 'dark'
+        } else {
+          const countryBasedTheme = await getCountryBasedTheme()
+          preferredTheme = countryBasedTheme
+        }
+      } else {
+        preferredTheme = cachedTheme
+      }
+
+      setTheme(preferredTheme == 'dark' ? 'dark' : 'light')
+      setRender(true)
+    })()
+
+    const handleThemeChange = (e) => {
+      const nextTheme = e.matches ? 'dark' : 'light'
+      setTheme(nextTheme)
+    }
+
+    const colorSchemeMedia = window.matchMedia(
+      '(prefers-color-scheme: dark)'
+    )
+
+    if (colorSchemeMedia.addEventListener) {
+      colorSchemeMedia.addEventListener('change', handleThemeChange)
+    }
+
+    return () => {
+      if (colorSchemeMedia.addEventListener) {
+        colorSchemeMedia.removeEventListener(
+          'change',
+          handleThemeChange
+        )
+      }
+    }
+  }, [])
+
+  return <>{render && children}</>
+}
+
+const globalStyles = globalCss({
+  'html,body': {
+    p: '0',
+    m: '0',
+    fontFamily: `${font.families.base}, ${font.families.fallback}`
+  },
+
+  '.slick-slide': {
+    pointerEvents: 'unset!important'
+  },
+
+  body: {
+    background: '$background',
+    minWidth: 375,
+  },
+
+  'h1,h2,h3,h4,h5,h6': {
+    p: 0,
+    m: 0
+  },
+
+  a: {
+    color: 'inherit',
+    textDecoration: 'none'
+  },
+
+  '*': {
+    boxSizing: 'border-box'
+  },
+
+  'input,button,textarea': {
+    outline: 'none',
+    fontFamily: 'inherit'
+  },
+
+  ...fontsStyles
+})
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false
+    }
+  }
+})
+
+function App({ Component, pageProps }) {
+  globalStyles()
+  const { asPath, pathname } = useRouter()
+  const [isMenuOpened, setIsMenuOpened] = useState(false)
+  const { t } = useTranslation('common')
+  const locale = usePersistLocale()
+
+  const [isHeaderVisible, setIsHeaderVisible] = useState(true)
+  const footerRef = useRef(null)
+
+  const listenScrollEvent = () => {
+    if (window.scrollY >= footerRef.current.offsetTop) {
+      return setIsHeaderVisible(false)
+    } else if (window.scrollY < footerRef.current.offsetTop) {
+      return setIsHeaderVisible(true)
+    }
+  }
+
+  useEffect(() => {
+    window.addEventListener('scroll', listenScrollEvent)
+
+    return () =>
+      window.removeEventListener('scroll', listenScrollEvent)
+  }, [])
+
+  useEffect(() => {
+    setLanguageHeader(locale)
+  }, [locale])
+
+  useEffect(() => {
+    if (isMenuOpened) {
+      document.body.style.overflowY = 'hidden'
+    } else {
+      document.body.style.overflowY = 'auto'
+    }
+  }, [isMenuOpened])
+
+  useEffect(() => {
+    setIsMenuOpened(false)
+  }, [asPath])
+
+  const title = useMemo(() => {
+    const routeKey = pathname.split('/')[1] || ''
+    const routeTitle = t(`title.${routeKey}`, null, { fallback: '' })
+
+    if (routeTitle == '') return t('title.default')
+
+    return t('title.base', { title: routeTitle })
+  }, [t, pathname])
+
+  return (
+    <>
+      <Head>
+        <meta name="theme-color" content="#ffffff" />
+        <meta name="viewport" content="width=device-width" />
+        <title>{title}</title>
+      </Head>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider
+          attribute="class"
+          value={{
+            light: lightTheme,
+            dark: darkTheme
+          }}
+          enableSystem={false}
+        >
+          <LegacyThemeProvider theme={themeConfig}>
+            <ThemeAutoSwitcher>
+              <Header
+                onToggleMenu={() => setIsMenuOpened((s) => !s)}
+                isMenuOpened={isMenuOpened}
+                isVisible={isHeaderVisible}
+              />
+              <Menu isOpened={isMenuOpened} />
+              <Component {...pageProps} />
+              <div ref={footerRef}>
+                <Footer className={footer()} />
+              </div>
+            </ThemeAutoSwitcher>
+          </LegacyThemeProvider>
+        </ThemeProvider>
+      </QueryClientProvider>
+    </>
+  )
+}
+
+const footer = css({
+  mt: 30,
+
+  '@md': {
+    mt: 73
+  },
+
+  '@lg': {
+    mt: 45
+  }
+})
+
+export default App

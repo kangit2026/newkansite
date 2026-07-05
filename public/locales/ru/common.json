@@ -1,0 +1,49 @@
+{
+  "title": {
+    "default": "KAN Development",
+    "base": "KAN | {{title}}",
+    "career": "Карьера и Вакансии"
+  },
+  "menu": {
+    "button": "Меню",
+    "home": "Главная",
+    "about": "О компании",
+    "services": "Услуги",
+    "projects": "Проекты",
+    "news": "Новости",
+    "contacts": "Контакты",
+    "market": "KAN Market",
+    "career": "Карьера",
+    "inside_community":"Inside Community"
+
+  },
+  "project_advertisement": "Ищем участки для новых проектов",
+  "commercial_advertisement": "Продажа коммерческих помещений",
+  "projects": {
+    "title": "Проекты",
+    "more_button": "Смотреть все"
+  },
+  "news": {
+    "title": "Новости",
+    "more_button": "Смотреть все"
+  },
+  "footer": {
+    "subscribe": "Подпишись на наши обновления",
+    "input": "Введите ваш e-mail",
+    "copyright": "Все права защищены. ООО «КАН ДЕВЕЛОПМЕНТ",
+    "links": {
+      "home": "Главная",
+      "projects": "Проекты",
+      "news": "Новости",
+      "career": "Карьера",
+      "about": "О компании",
+      "services": "Услуги",
+      "contacts": "Контакты",
+      "partnership": "KAN Market"
+    }
+  },
+  "errors": {
+    "not_found": "Ресурс не найден",
+    "unhandled": "Что-то пошло не так"
+  }
+}

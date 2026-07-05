@@ -1,0 +1,23 @@
+@import './mixins/breakpoints';
+@import './mixins/gutters';
+@import './mixins/grid';
+
+@mixin generate-grid() {
+  .ui-grid {
+    display: grid;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+
+    @include grid-columns();
+    @include grid-gutters();
+    @include grid-container-widths();
+  }
+
+  .ui-col {
+    position: relative;
+    max-width: 100%;
+
+    @include grid-spans();
+  }
+}

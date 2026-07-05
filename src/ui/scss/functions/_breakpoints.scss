@@ -1,0 +1,11 @@
+@function breakpoint-value($name, $breakpoints) {
+  @return map-get($breakpoints, $name);
+}
+
+@function breakpoint-infix($name, $breakpoints) {
+  @return if(
+    breakpoint-value($name, $breakpoints) == 0,
+    '',
+    '-#{$name}'
+  ); // returns '' in case of lowest breakpoint ('xs' by default)
+}

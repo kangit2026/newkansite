@@ -1,0 +1,10 @@
+$display-classes: none block inline inline-block flex inline-flex grid inline-grid;
+
+// mixin to generate d-[none/block/flex/inline-*/...] classes
+@mixin generate-displays($infix) {
+  @each $class in $display-classes {
+    .d#{$infix}-#{$class} {
+      display: $class !important;
+    }
+  }
+}

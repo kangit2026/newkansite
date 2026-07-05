@@ -1,0 +1,58 @@
+<svg viewBox="0 0 361 801" xmlns="http://www.w3.org/2000/svg">
+    <view id="light" viewBox="0 0 361 801" />
+    <view id="dark" viewBox="361 0 361 801" />
+    <g id="light-grid">
+        <path d="M0.550049 1L360.325 801" stroke="#120F82" stroke-linecap="square"/>
+        <path d="M360.325 1L0.550049 801" stroke="#120F82" stroke-linecap="square"/>
+        <path d="M0.550049 1L180.438 801" stroke="#120F82" stroke-linecap="square"/>
+        <path d="M180.438 1L0.550049 801" stroke="#120F82" stroke-linecap="square"/>
+        <path d="M0.550049 1L90.4375 801" stroke="#120F82" stroke-linecap="square"/>
+        <path d="M90.4375 1L0.550049 801" stroke="#120F82" stroke-linecap="square"/>
+        <path d="M180.55 1L270.437 801" stroke="#120F82" stroke-linecap="square"/>
+        <path d="M270.437 1L180.55 801" stroke="#120F82" stroke-linecap="square"/>
+        <path d="M91.6746 1L180.437 801" stroke="#120F82" stroke-linecap="square"/>
+        <path d="M180.437 1L91.6746 801" stroke="#120F82" stroke-linecap="square"/>
+        <path d="M270.55 1L360.437 801" stroke="#120F82" stroke-linecap="square"/>
+        <path d="M360.437 1L270.55 801" stroke="#120F82" stroke-linecap="square"/>
+        <path d="M180.55 1L360.437 801" stroke="#120F82" stroke-linecap="square"/>
+        <path d="M360.437 1L180.55 801" stroke="#120F82" stroke-linecap="square"/>
+        <path d="M0.549988 400.296H360.55" stroke="#120F82" stroke-linecap="square"/>
+        <path d="M0.549988 267.901H360.55" stroke="#120F82" stroke-linecap="square"/>
+        <path d="M0.549988 535.507H360.55" stroke="#120F82" stroke-linecap="square"/>
+        <path d="M0.549988 641.141H360.55" stroke="#120F82" stroke-linecap="square"/>
+        <path d="M0.549988 160.859H360.55" stroke="#120F82" stroke-linecap="square"/>
+        <path d="M0.549988 1H360.55" stroke="#120F82" stroke-linecap="square"/>
+        <path d="M180.775 1V801" stroke="#120F82" stroke-linecap="square"/>
+        <path d="M72.8872 1V801" stroke="#120F82" stroke-linecap="square"/>
+        <path d="M0.549988 1V801" stroke="#120F82" stroke-linecap="square"/>
+        <path d="M287.989 1V801" stroke="#120F82" stroke-linecap="square"/>
+        <path d="M360.55 1V801" stroke="#120F82" stroke-linecap="square"/>
+    </g>
+    <g id="dark-grid">
+        <path d="M361.5 1L721.275 801" stroke="#FFFFFF" stroke-linecap="square"/>
+        <path d="M721.275 1L361.5 801" stroke="#FFFFFF" stroke-linecap="square"/>
+        <path d="M361.5 1L541.388 801" stroke="#FFFFFF" stroke-linecap="square"/>
+        <path d="M541.388 1L361.5 801" stroke="#FFFFFF" stroke-linecap="square"/>
+        <path d="M361.5 1L451.388 801" stroke="#FFFFFF" stroke-linecap="square"/>
+        <path d="M451.388 1L361.5 801" stroke="#FFFFFF" stroke-linecap="square"/>
+        <path d="M541.5 1L631.387 801" stroke="#FFFFFF" stroke-linecap="square"/>
+        <path d="M631.387 1L541.5 801" stroke="#FFFFFF" stroke-linecap="square"/>
+        <path d="M452.625 1L541.387 801" stroke="#FFFFFF" stroke-linecap="square"/>
+        <path d="M541.387 1L452.625 801" stroke="#FFFFFF" stroke-linecap="square"/>
+        <path d="M631.5 1L721.387 801" stroke="#FFFFFF" stroke-linecap="square"/>
+        <path d="M721.387 1L631.5 801" stroke="#FFFFFF" stroke-linecap="square"/>
+        <path d="M541.5 1L721.387 801" stroke="#FFFFFF" stroke-linecap="square"/>
+        <path d="M721.387 1L541.5 801" stroke="#FFFFFF" stroke-linecap="square"/>
+        <path d="M361.5 400.296H721.5" stroke="#FFFFFF" stroke-linecap="square"/>
+        <path d="M361.5 267.901H721.5" stroke="#FFFFFF" stroke-linecap="square"/>
+        <path d="M361.5 535.507H721.5" stroke="#FFFFFF" stroke-linecap="square"/>
+        <path d="M361.5 641.141H721.5" stroke="#FFFFFF" stroke-linecap="square"/>
+        <path d="M361.5 160.859H721.5" stroke="#FFFFFF" stroke-linecap="square"/>
+        <path d="M361.5 1H721.5" stroke="#FFFFFF" stroke-linecap="square"/>
+        <path d="M541.725 1V801" stroke="#FFFFFF" stroke-linecap="square"/>
+        <path d="M433.837 1V801" stroke="#FFFFFF" stroke-linecap="square"/>
+        <path d="M361.5 1V801" stroke="#FFFFFF" stroke-linecap="square"/>
+        <path d="M648.939 1V801" stroke="#FFFFFF" stroke-linecap="square"/>
+        <path d="M721.5 1V801" stroke="#FFFFFF" stroke-linecap="square"/>
+    </g>
+</svg>

@@ -1,0 +1,7 @@
+services:
+  app:
+    image: kan-site-frontend
+    build:
+      context: .
+      args:
+        API_URL: https://www.$DOMAIN/api

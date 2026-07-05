@@ -1,0 +1,67 @@
+{
+  "title": {
+    "default": "KAN Development",
+    "base": "KAN | {{title}}",
+    "about": "Про компанію",
+    "areas": "Шукаємо ділянки для нових проектів",
+    "career": "Кар’єра і Вакансії",
+    "contacts": "Контакти",
+    "develop": "Девелоперський Супровід",
+    "general": "Послуги генерального підрядника",
+    "platform": "Продаж комерційної нерухомості",
+    "platform_rent": "Оренда комерційної нерухомості",
+    "projects": "Проєкти",
+    "services": "Послуги",
+    "sales": "Відділ продажу",
+    "sales_test": "Відділ продажу test",
+    "rent_contact": "Контакт для звʼязку",
+    "sales_rent": "Відділ оренди"
+  },
+  "menu": {
+    "button": "Меню",
+    "home": "Головна",
+    "about": "Про компанію",
+    "services": "Послуги",
+    "projects": "Проєкти",
+    "news": "Новини",
+    "contacts": "Контакти",
+    "market": "KAN Market",
+    "career": "Кар’єра",
+    "inside_community":"Inside Community"
+
+  },
+  "project_advertisement": "Шукаємо ділянки для нових проектів",
+  "commercial_advertisement": "Продаж комерційних приміщень",
+  "projects": {
+    "title": "Проєкти",
+    "more_button": "Дивитись усі"
+  },
+  "news": {
+    "title": "Новини",
+    "more_button": "Дивитись усі"
+  },
+  "footer": {
+    "subscribe": "Пiдпишiться на нашi оновлення",
+    "subscribe_success": "Ви успішно підписались на оновлення!",
+    "subscribe_error": "Трапилась помилка, спробуйте підписатись пізніше",
+    "input": "Введіть ваш e-mail",
+    "send": "Відправити",
+    "send_again": "Відправити знову",
+    "copyright": "Всi права захищено. ТОВ «КАН ДЕВЕЛОПМЕНТ»",
+    "links": {
+      "home": "Головна",
+      "projects": "Проєкти",
+      "news": "Новини",
+      "career": "Кар’єра",
+      "about": "Про компанію",
+      "services": "Послуги",
+      "contacts": "Контакти",
+      "partnership": "KAN Market"
+    }
+  },
+  "error": {
+    "not_found": "Ресурс не знайдено",
+    "unhandled": "Щось пішло не так"
+  },
+  "achievements":"“Головні досягнення та активи компанії – це команда професіоналів, постійні й надійні партнери та успішно реалізовані проєкти.”"
+}

@@ -1,0 +1,73 @@
+@use "sass:map";
+
+@mixin grid-columns($columns: $grid-columns-number, $breakpoints: $grid-breakpoints) {
+  @if type-of($columns) == number {
+    $value: $columns;
+    grid-template-columns: repeat($value, 1fr);
+  } @else if type-of($columns) == map {
+    @each $bp, $value in $columns {
+      @include media-breakpoint-up($bp, $breakpoints) {
+        grid-template-columns: repeat($value, 1fr);
+      }
+    }
+  }
+}
+
+@mixin grid-container-widths($widths: $grid-container-widths, $breakpoints: $grid-breakpoints) {
+  @each $bp, $max-width in $widths {
+    @include media-breakpoint-up($bp, $breakpoints) {
+      max-width: $max-width;
+    }
+  }
+}
+
+@mixin grid-gutters($gutters: $grid-gutters, $breakpoints: $grid-breakpoints) {
+  @if type-of($gutters) == number {
+    $value: $gutters;
+    grid-gap: 0 $value;
+  } @else if type-of($gutters) == map {
+    @each $bp, $value in $gutters {
+      @include media-breakpoint-up($bp, $breakpoints) {
+        grid-gap: 0 $value;
+      }
+    }
+  }
+}
+
+@mixin grid-spans($breakpoints: $grid-breakpoints) {
+  @each $bp, $value in $breakpoints {
+    @include media-breakpoint-up($bp, $grid-breakpoints) {
+      $spanExpression: getVariableExpression($bp);
+      grid-column: auto/span $spanExpression;
+
+      $startExpression: getVariableExpression($bp, 'start-', 0);
+      grid-column-start: $startExpression;
+
+      $startExpression: getVariableExpression($bp, 'order-', 0);
+      order: $startExpression;
+    }
+  }
+}
+
+@function getVariableExpression($bp, $prefix: '', $default: 1, $breakpoints: $grid-breakpoints) {
+  $finalVariable: '';
+  $foundBreakpoint: false;
+
+  @each $bpName, $value in $breakpoints {
+    @if not $foundBreakpoint {
+      $variable-name: --#{$var-prefix + $prefix + $bpName};
+
+      @if $value == 0 {
+        $finalVariable: var(#{$variable-name}, $default);
+      } @else {
+        $finalVariable: var(#{$variable-name}, $finalVariable);
+      }
+
+      @if $bpName == $bp {
+        $foundBreakpoint: true;
+      }
+    }
+  }
+
+  @return $finalVariable;
+}

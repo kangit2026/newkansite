@@ -1,0 +1,11 @@
+{
+  "heading": "Feedback form",
+  "name": "First Name Last Name",
+  "phone": "Phone number",
+  "email": "E-mail",
+  "message": "Message",
+  "send": "Send",
+  "error": "An error occurred, please try to submit later",
+  "send_again": "Resubmit form",
+  "success": "We will contact you soon ;)"
+}

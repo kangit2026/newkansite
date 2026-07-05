@@ -1,0 +1,76 @@
+// mixin to generate flex-[row/column/wrap/...], justify-content-[center/start/...] classes
+@mixin generate-flexes($infix) {
+  .flex#{$infix}-row {
+    flex-direction: row !important;
+  }
+
+  .flex#{$infix}-row-reverse {
+    flex-direction: row-reverse !important;
+  }
+
+  .flex#{$infix}-column {
+    flex-direction: column !important;
+  }
+
+  .flex#{$infix}-column-reverse {
+    flex-direction: column-reverse !important;
+  }
+
+  .flex#{$infix}-wrap {
+    flex-wrap: wrap !important;
+  }
+  .flex#{$infix}-shrink {
+    flex-shrink: 1;
+  }
+  .flex#{$infix}-no-shrink {
+    flex-shrink: 0;
+  }
+  .flex#{$infix}-nowrap {
+    flex-wrap: nowrap !important;
+  }
+
+  .justify-content#{$infix}-center {
+    justify-content: center;
+  }
+
+  .justify-content#{$infix}-start {
+    justify-content: start;
+  }
+
+  .justify-content#{$infix}-end {
+    justify-content: end;
+  }
+  .justify-content#{$infix}-flex-end {
+    justify-content: flex-end;
+  }
+
+  .justify-content#{$infix}-between {
+    justify-content: space-between;
+  }
+
+  .justify-content#{$infix}-around {
+    justify-content: space-around;
+  }
+
+  .align-items#{$infix}-center {
+    align-items: center;
+  }
+
+  .align-items#{$infix}-start {
+    align-items: flex-start;
+  }
+
+  .align-items#{$infix}-end {
+    align-items: flex-end;
+  }
+
+  .align-items#{$infix}-baseline {
+    align-items: baseline;
+  }
+
+  @for $i from 1 through 12 {
+    .order#{$infix}-#{$i} {
+      order: $i;
+    }
+  }
+}

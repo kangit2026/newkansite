@@ -1,0 +1,20 @@
+{
+  "motto": "Create with us",
+  "about": "About the company",
+  "history": "It is impossible to imagine a modern panorama of Kyiv without the silhouettes of Ocean Plaza, 101 Tower, Tetris Hall and IQ Business Center. Along with the historical points of tourist routes, they finally secured the status of modern symbols of the city. KAN Development creates a loving and inspiring Kyiv. The city of dreams you want to return to. A lively, dynamic capital, where it is pleasant to live, interesting to create, make scientific discoveries and develop your own business.",
+  "specialists": "KAN Development creates a loving and inspiring Kyiv. The city of dreams you want to return to. A lively, dynamic capital, where it is pleasant to live, interesting to create, make scientific discoveries and develop your own business.",
+  "today": {
+    "title": "KAN is rethinking its views on the traditional purpose of buildings",
+    "description": "The modern inhabitant of the metropolis, especially in the conditions of home isolation, needs more than just a place to spend the night or an 8-hour working day. It is becoming increasingly clear to people that they are not buying square meters, but living space. Who needs an area of concrete restrictions, if there is a space of freedom for life, self-realization and rest?"
+  },
+  "merit": {
+    "title": "The quality of facilities and the timeliness of their delivery is a matter of honor for KAN Development.",
+    "description": "We have one inviolable principle: KAN Development does not compromise on the quality and timeliness of delivery of facilities. We do not skimp on the quality of materials. All KAN Development facilities are put into operation in a clearly defined time or in advance",
+    "list": {
+      "first": "The best developer",
+      "second": "The best shopping center",
+      "third": "Best Office Center",
+      "fourth": "The best residential complex"
+    }
+  }
+}

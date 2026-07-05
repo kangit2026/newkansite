@@ -1,0 +1,10 @@
+<svg width="116" height="541" viewBox="0 0 116 541" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<path d="M71 1V540.5M114.5 510H1.5M1 507.5L8.25 524L15.5 540.5M1 429L115 494.5M115 403H1M1 351L115 220.5M115 321L1.5 190.5M1.5 137H115M1.5 111.5L115 46.5M115 31.5H1.5M15 1L1.5 32.5"
+ stroke="#C4C4C4"
+ id='line1'
+  stroke-opacity="0.6"
+  stroke-dasharray="1000 1000"
+    stroke-dashoffset= '449'/>
+    <animate xlink:href="#line1" attributeName="stroke-dashoffset"  dur="1s" begin="0s" calcMode="linear"  repeatCount="1" values="1000;900;600;400" />
+</svg>
+

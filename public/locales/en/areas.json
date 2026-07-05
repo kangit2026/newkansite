@@ -1,0 +1,19 @@
+{
+  "heading": "Looking for Sites for New Projects",
+  "description": "KAN Development is looking for land for residential and commercial projects in order to develop its business.",
+  "location": "Location of plots: Kyiv, without restrictions.",
+  "offers": "Send your proposals with a package of documents to",
+  "documents": {
+    "title": "Package of documents required for consideration",
+    "docs": [
+      "Copy of title documents to the land plot",
+      "Cadastral plan",
+      "Withdrawal from the State Land Cadastre of Land",
+      "Location of the site on the map of Kyiv",
+      "Map or layout of the site with links to adjacent streets (on a large scale)",
+      "Indication of the presence / absence of engineering communications at the site, map / scheme of communications at a scale of 1: 500 with their application (if any)",
+      "Commercial proposal indicating the terms of the transfer of rights",
+      "Sketch, concept, pre-project or project (if available)"
+    ]
+  }
+}

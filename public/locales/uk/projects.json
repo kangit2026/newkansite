@@ -1,0 +1,13 @@
+{
+  "section": "Проєкти в продажі",
+  "all_categories": "Всі категории",
+  "projects_amount": {
+    "zero": "Немає проєктів",
+    "one": "{{amount}} проєкт",
+    "few": "{{amount}} проєкти",
+    "many": "{{amount}} проєктів"
+  },
+  "type": {
+    "housing": "Житлові проєкти"
+  }
+}

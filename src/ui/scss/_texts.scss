@@ -1,0 +1,10 @@
+$text-classes: left right center start end justify;
+
+// mixin to generate text-[left/right/center/start/end/justify] classes
+@mixin generate-texts($infix) {
+  @each $class in $text-classes {
+    .text#{$infix}-#{$class} {
+      text-align: $class;
+    }
+  }
+}

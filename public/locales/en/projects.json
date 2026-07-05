@@ -1,0 +1,14 @@
+{
+  "section": "Projects for Sale",
+  "all_categories": "All categories",
+  "projects_amount": {
+    "zero": "No projects",
+    "one": "{{amount}} project",
+    "few": "{{amount}} projects",
+    "many": "{{amount}} projects"
+  },
+
+  "type": {
+    "housing": "Housing projects"
+  }
+}

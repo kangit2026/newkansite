@@ -1,0 +1,14 @@
+@mixin media-breakpoint-up($bp, $breakpoints: $grid-breakpoints) {
+  $value: get-breakpoint-value($bp, $breakpoints);
+  @if $value != 0 {
+    @media (min-width: $value) {
+      @content;
+    }
+  } @else {
+    @content;
+  }
+}
+
+@function get-breakpoint-value($bp, $breakpoints) {
+  @return map-get($breakpoints, $bp);
+}

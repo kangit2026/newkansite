@@ -1,0 +1,18 @@
+$overflow-classes: auto hidden inherit initial overlay revert scroll unset visible;
+
+// mixin to generate overflow-[auto/hidden/scroll/...] classes
+@mixin generate-overflows($infix) {
+  @each $class in $overflow-classes {
+    .overflow#{$infix}-#{$class} {
+      overflow: $class;
+    }
+
+    .overflow-x#{$infix}-#{$class} {
+      overflow: $class;
+    }
+
+    .overflow-y#{$infix}-#{$class} {
+      overflow: $class;
+    }
+  }
+}

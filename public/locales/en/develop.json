@@ -1,0 +1,21 @@
+{
+  "heading": "Development Support of Real Estate Projects",
+  "about": "- a development company that heads a group of partner companies involved in real estate projects of various scales and levels of complexity. The company consists of: project management specialists, architects, experienced designers, specialized divisions of engineering, operational, financial, commercial and legal support of projects.",
+  "experience": {
+    "title": "To date, KAN Development has a successful experience of system real estate management",
+    "items": ["creation of concepts", "designing"]
+  },
+  "building": {
+    "title": "Construction and Operation",
+    "items": [
+      "residential complexes",
+      "educational complexes",
+      "class «А» business centers",
+      "shopping and entertainment centers",
+      "multifunctional objects",
+      "tiered commercial",
+      "parking lots",
+      "and etc."
+    ]
+  }
+}

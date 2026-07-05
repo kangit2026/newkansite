@@ -1,0 +1,54 @@
+{
+  "title": {
+    "default": "KAN Development",
+    "base": "KAN | {{title}}",
+    "career": "Career",
+    "sales": "Sales department",
+    "sales_rent": "Rental Department",
+    "rent_contact": "Contact for communication"
+  },
+  "menu": {
+    "button": "Menu",
+    "home": "Main",
+    "about": "About",
+    "services": "Services",
+    "projects": "Projects",
+    "news": "News",
+    "contacts": "Contact",
+    "market": "KAN Market",
+    "career": "Career",
+    "inside_community":"Inside Community"
+
+  },
+  "project_advertisement": "Looking for land lots for new projects",
+  "commercial_advertisement": "Sale of commercial spaces",
+  "projects": {
+    "title": "Projects",
+    "more_button": "View all"
+  },
+  "news": {
+    "title": "News",
+    "more_button": "View all"
+  },
+  "footer": {
+    "subscribe": "Subscribe to our updates",
+    "input": "Enter your e-mail",
+    "copyright": "All right reserved «KAN DEVELOPMENT» LLC",
+    "links": {
+      "home": "Main",
+      "projects": "Projects",
+      "news": "News",
+      "career": "Career",
+      "about": "About",
+      "services": "Services",
+      "contacts": "Contact",
+      "partnership": "KAN Market"
+    }
+  },
+  "errors": {
+    "not_found": "Resource not found",
+    "unhandled": "Something went wrong"
+  },
+  "achievements":"“Our greatest assets are our team of professionals, trusted partners, and the successful projects we've delivered.”"
+
+}

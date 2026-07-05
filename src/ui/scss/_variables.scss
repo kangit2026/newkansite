@@ -1,0 +1,27 @@
+$var-prefix: ui- !default;
+
+$grid-columns-number: 12;
+
+$grid-breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 1024px,
+  xl: 1400px
+);
+
+$grid-gutters: (
+  xs: 8px,
+  sm: 8px,
+  md: 30px,
+  lg: 30px,
+  xl:30px
+);
+
+$grid-container-widths: (
+  xs: calc(100% - 40px),
+  sm: 540px,
+  md: 720px,
+  lg: 960px,
+  xl: 1200px
+);

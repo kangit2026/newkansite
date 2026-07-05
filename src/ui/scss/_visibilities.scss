@@ -1,0 +1,10 @@
+// mixin to generate visible/hidden classes
+@mixin generate-visibilities($infix) {
+  .visible#{$infix} {
+    visibility: visible;
+  }
+
+  .hidden#{$infix} {
+    visibility: hidden;
+  }
+}

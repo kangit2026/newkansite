@@ -1,0 +1,18 @@
+@import './breakpoints';
+
+@mixin gutter-styles($option, $gutters: $grid-gutters) {
+  @if type-of($gutters) == number {
+    $value: $gutters / 2;
+
+    #{$option}-left: $value;
+    #{$option}-right: $value;
+  } @else if type-of($gutters) == map {
+    @each $bp, $gutter in $grid-gutters {
+      $value: $gutter / 2;
+      @include media-breakpoint-up($bp, $grid-breakpoints) {
+        #{$option}-left: $value;
+        #{$option}-right: $value;
+      }
+    }
+  }
+}

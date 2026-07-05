@@ -1,0 +1,128 @@
+{
+  "sales": "Sales department",
+  "sales_rent": "Rental Department",
+  "heading": "Sale Real Estate",
+  "heading_rent": "Lease of Commercial Real Estate",
+  "collaboration": "Unlock a unique opportunity to purchase or lease commercial spaces in KAN residential complexes.",
+  "collaboration_rent": "We offer commercial spaces for rent within KAN residential complexes — with ready-made infrastructure, an established resident community, and predictable district development dynamics.",
+  "efficiency": "Market data shows that businesses in modern residential communities consistently outperform traditional locations. Cafés, shops, beauty salons, and pharmacies within these complexes see 2.5x higher revenues, thanks to:",
+  "efficiency_rent": "Benefits for your business:",
+  "proposal": "We offer flexible purchase and long-term lease options, with spaces of various sizes and functions to suit your business needs.",
+  "invest": "Invest in the growth of your business with KAN —right where your customers already live.",
+  "dot_0": "A built-in customer base of local residents",
+  "dot_1": "Strong community loyalty and repeat business",
+  "dot_2": "A well-designed infrastructure for both businesses and clients",
+  "dot_3": "Lower customer acquisition costs",
+  "dot_rent_0": "A stable daily traffic from residential complex residents",
+  "dot_rent_1": "High level of trust and customer loyalty",
+  "dot_rent_2": "Modern premises that meet commercial standards",
+  "dot_rent_3": "Cost savings on marketing and customer acquisition",
+  "platforms": [
+    {
+      "id": 1,
+      "header": "Respublika",
+      "img": "/platform/background-img/respublika_new.jpeg",
+      "description": "Large residential complex",
+      "logo": {
+        "src": "/platform/logo/logo-1.svg",
+        "width": 62,
+        "height": 63
+      },
+      "textArr": [
+        "The largest residential complex in Ukraine",
+        "More than 50,000 inhabitants",
+        "The public space around the houses, the promenade and the Public Center inside the complex, provide a constant flow of customers for your business"
+      ],
+      "phone": "+38 (044) 344-08-61"
+    },
+    {
+      "id": 2,
+      "header": "Fayna Town",
+      "img": "/platform/background-img/fayna_new.jpeg",
+      "description": "Large residential complex",
+      "logo": {
+        "src": "/platform/logo/logo-2.svg",
+        "width": 91,
+        "height": 52
+      },
+      "textArr": [
+        "Large residential complex with more than 8,000 apartments, which is about 20,000 residents who actively use the services in the complex,",
+        "Smart street and public spaces on the ground floors allow you to find the perfect place for business,",
+        "Convenient location - 10 minutes to the subway, 150 meters from land transport stops, convenient access by car",
+        "High passenger traffic on Salyutnaya Street (15,000 people per day), Shcherbakovsky Street (70,000 people per day) and A. Tupolev Street (35,000 people per day)"
+      ],
+      "phone": "+38 (044) 344-09-21"
+    },
+    {
+      "id": 3,
+      "header": "UNIT.Home",
+      "img": "/platform/background-img/unit_new.jpg",
+      "description": "Large residential complex",
+      "logo": {
+        "src": "/platform/logo/logo-3.svg",
+        "width": 176,
+        "height": 13
+      },
+      "textArr": [
+        "The only analogue of Silicon Valley in Ukraine",
+        "24/7 unique flow of targeted traffic, 35,000 residents of business campuses, apartments, event halls",
+        "More than 500+ events a year that attract the attention of the international community"
+      ],
+      "phone": "+38 (044) 344-10-47"
+    }
+  ],
+  "platforms_rent": [
+    {
+      "id": 1,
+      "header": "Respublika",
+      "img": "/platform/background-img/respublika_rent_new.jpeg",
+      "description": "Large residential complex",
+      "logo": {
+        "src": "/platform/logo/logo-1.svg",
+        "width": 62,
+        "height": 63
+      },
+      "textArr": [
+        "The largest residential complex in Ukraine",
+        "More than 50,000 inhabitants",
+        "The public space around the houses, the promenade and the Public Center inside the complex, provide a constant flow of customers for your business"
+      ],
+      "phone": "+38 (067) 356-29-85"
+    },
+    {
+      "id": 2,
+      "header": "Fayna Town",
+      "img": "/platform/background-img/fayna_rent_new.jpg",
+      "description": "Large residential complex",
+      "logo": {
+        "src": "/platform/logo/logo-2.svg",
+        "width": 91,
+        "height": 52
+      },
+      "textArr": [
+        "Large residential complex with more than 8,000 apartments, which is about 20,000 residents who actively use the services in the complex,",
+        "Smart street and public spaces on the ground floors allow you to find the perfect place for business,",
+        "Convenient location - 10 minutes to the subway, 150 meters from land transport stops, convenient access by car",
+        "High passenger traffic on Salyutnaya Street (15,000 people per day), Shcherbakovsky Street (70,000 people per day) and A. Tupolev Street (35,000 people per day)"
+      ],
+      "phone": "+38 (067) 129-39-31"
+    },
+    {
+      "id": 3,
+      "header": "UNIT.Home",
+      "img": "/platform/background-img/unit_rent_new.jpg",
+      "description": "Large residential complex",
+      "logo": {
+        "src": "/platform/logo/logo-3.svg",
+        "width": 176,
+        "height": 13
+      },
+      "textArr": [
+        "The only analogue of Silicon Valley in Ukraine",
+        "24/7 unique flow of targeted traffic, 35,000 residents of business campuses, apartments, event halls",
+        "More than 500+ events a year that attract the attention of the international community"
+      ],
+      "phone": "+38 (067) 129-39-31"
+    }
+  ]
+}

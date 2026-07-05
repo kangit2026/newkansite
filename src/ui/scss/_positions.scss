@@ -1,0 +1,22 @@
+// mixin to generate p-[relative/static/absolute/fixed/sticky] classes
+@mixin generate-positions($infix) {
+  .p#{$infix}-relative {
+    position: relative !important;
+  }
+
+  .p#{$infix}-static {
+    position: static !important;
+  }
+
+  .p#{$infix}-absolute {
+    position: absolute !important;
+  }
+
+  .p#{$infix}-fixed {
+    position: fixed !important;
+  }
+
+  .p#{$infix}-sticky {
+    position: sticky !important;
+  }
+}

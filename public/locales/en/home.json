@@ -1,0 +1,31 @@
+{
+  "motto": "Create with Us",
+  "partnerships": [
+    {
+      "title": "We are partners with Puma!",
+      "description": "Get exclusive brand deals and benefits",
+      "image": "/home/puma.png",
+      "link": "/puma"
+    }
+  ],
+  "view_details": "View details",
+  "awards": {
+    "title": "About company",
+    "first": {
+      "value": "10000",
+      "description": "Happy families"
+    },
+    "second": {
+      "value": "60000",
+      "description": "Residents in KAN districts"
+    },
+    "third": {
+      "value": "2000",
+      "description": "Children happily growing in our kindergartens and schools"
+    },
+    "fourth": {
+      "value": "25000",
+      "description": "Workplaces created by our projects"
+    }
+  }
+}

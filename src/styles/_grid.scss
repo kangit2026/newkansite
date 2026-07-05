@@ -1,0 +1,24 @@
+@import '../ui/scss/variables';
+$grid-columns-number: 12;
+
+$grid-breakpoints: (
+  xs: 0,
+  sm: 375px,
+  md: 768px,
+  lg: 1024px,
+  xl: 1440px
+);
+
+$grid-gutters: 0px;
+
+$grid-container-widths: (
+  xs: calc(100% - 15px),
+  sm: 360px,
+  md: 768px,
+  lg: 1000px,
+  xl: 1392px
+);
+
+@import '../ui/scss/kit';
+
+@include generate-kit();

@@ -1,0 +1,4 @@
+export const fonts = {
+  primary:
+    '-apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+}

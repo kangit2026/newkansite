@@ -1,0 +1,29 @@
+@import './grid';
+@import './positions';
+@import './overflows';
+@import './texts';
+@import './displays';
+@import './visibilities';
+@import './flexes';
+@import './functions/breakpoints';
+
+@mixin generate-bp-styles($infix) {
+  @include generate-positions($infix);
+  @include generate-overflows($infix);
+  @include generate-texts($infix);
+  @include generate-displays($infix);
+  @include generate-visibilities($infix);
+  @include generate-flexes($infix);
+}
+
+@mixin generate-kit($breakpoints: $grid-breakpoints) {
+  @include generate-grid();
+
+  @each $breakpoint in map-keys($breakpoints) {
+    $infix: breakpoint-infix($breakpoint, $breakpoints);
+
+    @include media-breakpoint-up($breakpoint, $breakpoints) {
+      @include generate-bp-styles($infix);
+    }
+  }
+}
