@@ -24,12 +24,15 @@ export const getProjectsCategories = (ctx) => {
   return get({
     url: `/category`,
     ctx
-  }).then(({ data }) => data.value || [])
+  }).then(({ data }) => data.data || [])
 }
 
-export const getFeaturedProjects = ({ ctx = {} }) => {
+export const featuredProjectsCount = 4
+
+export const getFeaturedProjects = (ctx = {}) => {
   const url = queryString.stringifyUrl({
-    url: `/project/featured`
+    url: `/project`,
+    query: { featured: true, count: featuredProjectsCount }
   })
 
   return get({
@@ -37,7 +40,7 @@ export const getFeaturedProjects = ({ ctx = {} }) => {
     ctx
   })
     .then(({ data }) => {
-      return data.value
+      return (data.data || [])
         .map(mapFromFeaturedBackendProject)
         .filter((i) => i != null)
     })
@@ -65,10 +68,10 @@ export const getProjects = ({
   })
     .then(({ data }) => {
       return {
-        data: data.value.value
+        data: (data.data || [])
           .map(mapFromBackendProject)
           .filter((i) => i != null),
-        total: data.value.total
+        total: data.meta?.total || 0
       }
     })
     .catch((_) => ({

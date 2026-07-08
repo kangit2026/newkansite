@@ -24,16 +24,16 @@ export const Footer: FC<FooterProps> = ({ settings, ...props }) => {
     <>
       {router.pathname == '/areas' ? (
         <Advertisement
-          title={t('commercial_advertisement')}
+          title={s.commercialAd.title || t('commercial_advertisement')}
           className={advertisementProject()}
-          link="/platform"
+          link={s.commercialAd.link || '/platform'}
           variant="solid"
         />
       ) : (
         <Advertisement
-          title={t('project_advertisement')}
+          title={s.projectAd.title || t('project_advertisement')}
           className={advertisementProject()}
-          link="/areas"
+          link={s.projectAd.link || '/areas'}
           variant="solid"
         />
       )}
@@ -48,7 +48,11 @@ export const Footer: FC<FooterProps> = ({ settings, ...props }) => {
           </TextChatbot>
         </Col>
         <Col className={undefined}  xs={{ span: 10, start: 2 }}>
-          <TextEmail>{s.email}</TextEmail>
+          {s.email ? (
+            <TextEmail as="a" href={`mailto:${s.email}`}>{s.email}</TextEmail>
+          ) : (
+            <TextEmail>{s.email}</TextEmail>
+          )}
         </Col>
         <Col className={undefined}  xs={{ span: 10, start: 2 }} lg={{ span: 5, start: 2 }}>
           <HeaderFooter phone={s.phone} />

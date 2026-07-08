@@ -2,13 +2,13 @@ import useTranslation from 'next-translate/useTranslation'
 import React, { FC } from 'react'
 import { styled } from 'stitches.config'
 
-export const TagLine: FC = () => {
+export const TagLine: FC<{ text?: string | null }> = ({ text }) => {
   const { t } = useTranslation('common')
 
   return (
     <Container>
       <Text>
-        {t('achievements')}
+        {text || t('achievements')}
       </Text>
     </Container>
   )

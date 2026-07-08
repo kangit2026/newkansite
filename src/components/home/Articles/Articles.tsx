@@ -1,66 +1,66 @@
 import React, { FC, useEffect, useRef, useState } from 'react'
+import { useRouter } from 'next/router'
 import { styled, css } from 'stitches.config'
 import { Col, Grid } from '@ui'
 import { Article } from './Article'
-import {
-  featuredNewsCount,
-  getNewsPageItems,
-  newsCount,
-  NewsInfo
-} from '@utils/api/news'
+import { featuredNewsCount, newsCount, NewsInfo } from '@utils/api/news'
 import { Section } from '../Section'
 import useTranslation from 'next-translate/useTranslation'
 import { Pagination } from '@components/common/Pagination'
-import { useQuery } from 'react-query'
 import { ScrollAnchor } from '@components/common/ScrollAnchor'
 import { scrollToElement } from '@utils/helpers/animations'
 import cx from 'classnames'
 
 type ArticlesProps = {
   news: { data: NewsInfo[]; total: number }[]
+  page?: number
 }
 
+const getPageHref = (page: number) =>
+  page > 0 ? `/news?page=${page + 1}` : '/news'
+
 const Articles: FC<ArticlesProps> = ({
-  news: initialData = [
+  news = [
     { data: [], total: 0 },
     { data: [], total: 0 }
-  ]
+  ],
+  page: currentPage = 0
 }) => {
   const { t } = useTranslation('news')
-  const [currentPage, setCurrentPage] = useState(0)
-  const [canFetch, setCanFetch] = useState(false)
+  const router = useRouter()
+  const [isNavigating, setIsNavigating] = useState(false)
   const anchorRef = useRef(null)
-
-  const { isFetching, data } = useQuery<
-    {
-      data: NewsInfo[]
-      total: number
-    }[]
-  >(
-    ['news', currentPage, canFetch],
-    () =>
-      getNewsPageItems({
-        page: currentPage
-      }),
-    {
-      enabled: canFetch,
-      initialData,
-      onSuccess() {
-        scrollToElement(anchorRef.current)
-      }
-    }
-  )
+  const isFirstRender = useRef(true)
 
   useEffect(() => {
-    if (currentPage > 0) {
-      setCanFetch(true)
+    const handleStart = (url: string) => {
+      if (url.split('?')[0] === router.pathname) setIsNavigating(true)
     }
+    const handleDone = () => setIsNavigating(false)
+
+    router.events.on('routeChangeStart', handleStart)
+    router.events.on('routeChangeComplete', handleDone)
+    router.events.on('routeChangeError', handleDone)
+
+    return () => {
+      router.events.off('routeChangeStart', handleStart)
+      router.events.off('routeChangeComplete', handleDone)
+      router.events.off('routeChangeError', handleDone)
+    }
+  }, [router])
+
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false
+      return
+    }
+    scrollToElement(anchorRef.current)
   }, [currentPage])
 
   const [
-    { data: news = [], total = 0 },
+    { data: newsItems = [], total = 0 },
     { data: featuredNews = [], total: featuredTotal = 0 }
-  ] = data
+  ] = news
   const pagesCount = Math.max(
     Math.ceil(total / newsCount),
     Math.ceil(featuredTotal / featuredNewsCount)
@@ -78,7 +78,7 @@ const Articles: FC<ArticlesProps> = ({
           <Grid className={undefined} >
             <Col className={undefined}  xs={12} lg={{ span: 5, start: 2 }}>
               <div className={newsList()}>
-                {news.map(
+                {newsItems.map(
                   ({
                     id,
                     slug,
@@ -150,8 +150,8 @@ const Articles: FC<ArticlesProps> = ({
               <Pagination
                 pagesCount={pagesCount}
                 currentPage={currentPage}
-                isLoading={isFetching}
-                setPage={(page: number) => setCurrentPage(page)}
+                isLoading={isNavigating}
+                getHref={getPageHref}
               />
             </Col>
           </Grid>

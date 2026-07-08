@@ -11,8 +11,12 @@ import { TagLine } from '../DevelopAccompaniment/TagLine'
 import { Section } from '@components/home/Section'
 import { ScrollAnchor } from '../ScrollAnchor'
 import { RecommendedProjects } from '@components/projects'
+import { AboutPageContent } from '@utils/api/about'
 
-export const About: FC<{ projects: any }> = ({ projects }) => {
+export const About: FC<{
+  projects: any
+  content?: AboutPageContent
+}> = ({ projects, content }) => {
   const anchorRef = useRef(null)
   const { t } = useTranslation('about')
 
@@ -36,7 +40,11 @@ export const About: FC<{ projects: any }> = ({ projects }) => {
   return (
     <>
       <BackgroundImg>
-        <TitleContent anchorRef={anchorRef} />
+        <TitleContent
+          anchorRef={anchorRef}
+          motto={content?.motto}
+          heading={content?.heading}
+        />
       </BackgroundImg>
       <Grid className={undefined} >
         <Col className={undefined}  md={{ span: 10, start: 2 }} xs={{ span: 10, start: 2 }}>
@@ -49,12 +57,15 @@ export const About: FC<{ projects: any }> = ({ projects }) => {
             }}
           />
           <TextContent>
-            <p>{t('history')}</p>
-            <p>{t('specialists')}</p>
+            <p>{content?.history || t('history')}</p>
+            <p>{content?.specialists || t('specialists')}</p>
           </TextContent>
         </Col>
       </Grid>
-      <SectionNow />
+      <SectionNow
+        title={content?.today?.title}
+        description={content?.today?.description}
+      />
       <Section
         title={t('common:projects.title')}
         buttonTitle={t('common:projects.more_button')}
@@ -71,8 +82,12 @@ export const About: FC<{ projects: any }> = ({ projects }) => {
             // categories={categories}
           />
       </Section>
-      <MeritSection />
-      <TagLine />
+      <MeritSection
+        title={content?.merit?.title}
+        description={content?.merit?.description}
+        list={content?.merit?.list}
+      />
+      <TagLine text={content?.achievementsText} />
     </>
   )
 }

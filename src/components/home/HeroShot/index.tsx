@@ -10,12 +10,14 @@ export type HeroShotProps = {
   motto?: string | null
   awardsTitle?: string | null
   awards?: { value: number | null; description: string | null }[]
+  videoUrl?: string | null
 }
 
 export const HeroShot: FC<HeroShotProps> = ({
   motto,
   awardsTitle,
-  awards
+  awards,
+  videoUrl
 }) => {
   const { t } = useTranslation('home')
   const resolvedMotto = motto || t('motto')
@@ -31,7 +33,7 @@ export const HeroShot: FC<HeroShotProps> = ({
           }}
         />
         <Col className={undefined}  xs={12} md={{ span: 4, start: 8 }}>
-          <ManifestVideo />
+          <ManifestVideo src={videoUrl} />
           <Heading>
             KAN Development
             <span className="d-none d-md-inline">

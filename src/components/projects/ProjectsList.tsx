@@ -8,6 +8,7 @@ import React, {
   useRef,
   useState
 } from 'react'
+import { useRouter } from 'next/router'
 import { css, styled } from 'stitches.config'
 import { Filters } from './Filters'
 import MapIcon from '@assets/projects/map.svg?svgr'
@@ -16,18 +17,29 @@ import StackIcon from '@assets/projects/stack.svg?svgr'
 import { ProjectCard } from '@components/common/ProjectCard'
 import { Col, Grid } from '@ui'
 import { Project } from '@utils/api/project'
-import {
-  getProjects,
-  ProjectCategory,
-  projectsCount
-} from '@utils/api/projects'
-import { useQuery } from 'react-query'
+import { ProjectCategory, projectsCount } from '@utils/api/projects'
 import { ScrollAnchor } from '@components/common/ScrollAnchor'
 import { useTheme } from 'next-themes'
 import { scrollToElement } from '@utils/helpers/animations'
 
+const buildProjectsHref = (
+  page: number,
+  categoryId: number | null
+): string => {
+  const params = new URLSearchParams()
+
+  if (categoryId) params.set('category', String(categoryId))
+  if (page > 0) params.set('page', String(page + 1))
+
+  const qs = params.toString()
+
+  return `/projects${qs ? `?${qs}` : ''}`
+}
+
 export type ProjectsListProps = HTMLAttributes<HTMLDivElement> & {
   projects: { data: Project[]; total: number }
+  page?: number
+  categoryId?: number | null
   categories: ProjectCategory[]
 }
 
@@ -126,58 +138,46 @@ const Content: FC<ContentProps> = ({ projects, type }) => {
 }
 
 export const ProjectsList: FC<ProjectsListProps> = ({
-  projects: initialData = { data: [], total: 0 },
+  projects: { data: projects = [], total = 0 } = { data: [], total: 0 },
   categories,
+  page: currentPage = 0,
+  categoryId = null,
   ...props
 }) => {
   const [selectedType, setSelectedType] = useState(
     ProjectItemTypes.Stack
   )
 
-  const [selectedProjectType, setSelectedProjectType] =
-    useState<number>(null)
-  const [currentPage, setCurrentPage] = useState(0)
-  const [canFetch, setCanFetch] = useState(false)
+  const router = useRouter()
+  const [isNavigating, setIsNavigating] = useState(false)
   const filtersRef = useRef(null)
+  const isFirstRender = useRef(true)
 
   useEffect(() => {
-    // hack to prevent query when the component is mounted
-    if (currentPage > 0) {
-      setCanFetch(true)
+    const handleStart = (url: string) => {
+      if (url.split('?')[0] === router.pathname) setIsNavigating(true)
     }
-  }, [currentPage])
+    const handleDone = () => setIsNavigating(false)
+
+    router.events.on('routeChangeStart', handleStart)
+    router.events.on('routeChangeComplete', handleDone)
+    router.events.on('routeChangeError', handleDone)
+
+    return () => {
+      router.events.off('routeChangeStart', handleStart)
+      router.events.off('routeChangeComplete', handleDone)
+      router.events.off('routeChangeError', handleDone)
+    }
+  }, [router])
 
   useEffect(() => {
-    // the same as previous, but checking project categories filter
-    if (selectedProjectType != null) {
-      setCanFetch(true)
+    if (isFirstRender.current) {
+      isFirstRender.current = false
+      return
     }
-  }, [selectedProjectType])
+    scrollToElement(filtersRef.current)
+  }, [currentPage, categoryId])
 
-  const { isFetching, data } = useQuery<{
-    data: Project[]
-    total: number
-  }>(
-    ['projects', currentPage, canFetch, selectedProjectType],
-    () =>
-      getProjects({
-        count: projectsCount,
-        start: currentPage * projectsCount,
-        categoryId: selectedProjectType
-          ? categories.find(({ id }) => id == selectedProjectType).id
-          : null
-      }),
-    {
-      enabled: canFetch,
-      initialData,
-      onSuccess() {
-        scrollToElement(filtersRef.current)
-      },
-      cacheTime: 0
-    }
-  )
-
-  const { data: projects = [], total = 0 } = data
   const pagesCount = Math.ceil(total / projectsCount)
 
   return (
@@ -185,15 +185,14 @@ export const ProjectsList: FC<ProjectsListProps> = ({
       <div className="p-relative">
         <ScrollAnchor ref={filtersRef} />
         <Filters
-          amount={data.total}
+          amount={total}
           itemTypes={itemTypes}
           categories={categories}
           selectedType={selectedType}
-          selectedProjectType={selectedProjectType}
+          selectedProjectType={categoryId}
           onItemTypeChange={setSelectedType}
-          onProjectTypeChange={(t) => {
-            setCurrentPage(0)
-            setSelectedProjectType(t)
+          onProjectTypeChange={(t: number) => {
+            router.push(buildProjectsHref(0, t))
           }}
         />
       </div>
@@ -208,8 +207,10 @@ export const ProjectsList: FC<ProjectsListProps> = ({
               className={pagination()}
               pagesCount={pagesCount}
               currentPage={currentPage}
-              isLoading={isFetching}
-              setPage={(page: number) => setCurrentPage(page)}
+              isLoading={isNavigating}
+              getHref={(page: number) =>
+                buildProjectsHref(page, categoryId)
+              }
             />
           )}
         </Col>

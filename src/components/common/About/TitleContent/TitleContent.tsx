@@ -8,7 +8,9 @@ import { scrollToElement } from '@utils/helpers/animations'
 
 export const TitleContent: FC<{
   anchorRef: RefObject<HTMLDivElement>
-}> = ({ anchorRef }) => {
+  motto?: string | null
+  heading?: string | null
+}> = ({ anchorRef, motto, heading }) => {
   const { t } = useTranslation('about')
 
   return (
@@ -17,8 +19,8 @@ export const TitleContent: FC<{
         xs={12}
         className="d-md-flex flex-md-column justify-content-md-center align-items-md-center"
       >
-        <HeaderText>{t('motto')}</HeaderText>
-        <TitleText>{t('about')}</TitleText>
+        <HeaderText>{motto || t('motto')}</HeaderText>
+        <TitleText>{heading || t('about')}</TitleText>
         <Arrow
           className={arrowDow()}
           onClick={() => scrollToElement(anchorRef.current)}

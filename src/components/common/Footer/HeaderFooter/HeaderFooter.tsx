@@ -6,10 +6,18 @@ export type HeaderFooterProps = {
   phone?: string | null
 }
 
+const toTelHref = (phone: string) => `tel:${phone.replace(/[^\d+]/g, '')}`
+
 export const HeaderFooter: FC<HeaderFooterProps> = ({ phone }) => {
   return (
     <Content>
-      <TextTel>{phone}</TextTel>
+      {phone ? (
+        <TextTel as="a" href={toTelHref(phone)}>
+          {phone}
+        </TextTel>
+      ) : (
+        <TextTel>{phone}</TextTel>
+      )}
     </Content>
   )
 }

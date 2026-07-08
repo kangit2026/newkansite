@@ -7,32 +7,41 @@ import useTranslation from 'next-translate/useTranslation'
 
 export type ContainerProps = {
   container?: string
+  title?: string | null
+  description?: string | null
+  list?: string[]
 }
 
 const merits = ['first', 'second', 'third', 'fourth']
 
-export const MeritSection: FC<ContainerProps> = ({ container }) => {
+export const MeritSection: FC<ContainerProps> = ({
+  container,
+  title,
+  description,
+  list
+}) => {
   const { t } = useTranslation('about')
+
+  const resolvedList =
+    list && list.length > 0 ? list : merits.map((m) => t(`merit.list.${m}`))
 
   return (
     <>
       <Section
-        title={t('merit.title')}
+        title={title || t('merit.title')}
         className={section()}
         buttonTitle={''}
         titleClassName={''}
       >
         <Grid className={undefined} >
-          <Col className={undefined} 
+          <Col className={undefined}
             xs={{ span: 10, start: 2 }}
             md={{ span: 10, start: 2 }}
             lg={{ span: 10, start: 2 }}
           >
             <Container className={container}>
-              <MeritText>{t('merit.description')}:</MeritText>
-              <MeritList
-                merits={merits.map((m) => t(`merit.list.${m}`))}
-              />
+              <MeritText>{description || t('merit.description')}:</MeritText>
+              <MeritList merits={resolvedList} />
             </Container>
           </Col>
         </Grid>

@@ -1,10 +1,12 @@
 import { get } from '.'
 import getValue from 'lodash-es/get'
+import isEmpty from 'lodash-es/isEmpty'
 import axios from 'axios'
 export type BreadCrumb = { title: string; link?: string }
 
 export type Project = {
   id: number
+  slug: string
   image: string
   title: string
   link: string
@@ -23,10 +25,13 @@ export type Project = {
   infrastructure: string[]
   category: string
   gallery: string[]
+  metaTitle?: string
+  metaDescription?: string
 }
 
 export const mapFromFeaturedBackendProject = ({
   id,
+  slug,
   name,
   phone,
   mainPicture
@@ -37,7 +42,7 @@ export const mapFromFeaturedBackendProject = ({
       phone,
       title: name,
       image: mainPicture,
-      link: `/project/${id}`
+      link: `/project/${slug}`
     }
   } catch (e) {
     console.error(e)
@@ -47,6 +52,7 @@ export const mapFromFeaturedBackendProject = ({
 
 export const mapFromBackendProject = ({
   id,
+  slug,
   category,
   pictures = [],
   infrastructureItems = [],
@@ -61,12 +67,15 @@ export const mapFromBackendProject = ({
   video,
   name,
   phone,
-  mainPicture
+  mainPicture,
+  metaTitle,
+  metaDescription
 }) => {
   try {
     const categoryName = getValue(category, 'name', null)
     return {
       id:id||null,
+      slug:slug||null,
       phone:phone||null,
       fullArea:fullArea||null,
       video:video||null,
@@ -76,8 +85,10 @@ export const mapFromBackendProject = ({
       address:address||null,
       website:website||null,
       category: categoryName,
-      link: `/project/${id}`,
+      link: `/project/${slug}`,
       description: text,
+      metaTitle: metaTitle||null,
+      metaDescription: metaDescription||null,
       logo: logoUrl||null,
       infrastructure: infrastructureItems?.map((i) =>
         getValue(i, 'name', null)
@@ -103,13 +114,29 @@ export const mapFromBackendProject = ({
   }
 }
 
-export const getProject = ({ id, ctx = {} }) => {
+export type ProjectBySlugResult = {
+  details?: Partial<Project>
+  redirectToSlug?: string
+}
+
+export const getProject = ({
+  slug,
+  ctx = {}
+}): Promise<ProjectBySlugResult> => {
   return get({
-    url: `/project/${id}`,
+    url: `/project/${slug}`,
     ctx
-  }).then(({ data }) =>
-    data?.value ? mapFromBackendProject(data.value) || {} : {}
-  )
+  })
+    .then(({ data }) => {
+      if (data?.redirect?.slug) {
+        return { redirectToSlug: data.redirect.slug }
+      }
+
+      if (isEmpty(data?.data)) return { details: {} }
+
+      return { details: mapFromBackendProject(data.data) || {} }
+    })
+    .catch((_) => ({ details: {} }))
 }
 
 export const getPartnership = async () => {

@@ -4,24 +4,27 @@ import { css, styled } from 'stitches.config'
 import { Col, Grid } from '@ui'
 import useTranslation from 'next-translate/useTranslation'
 
-export const SectionNow: FC = () => {
+export const SectionNow: FC<{
+  title?: string | null
+  description?: string | null
+}> = ({ title, description }) => {
   const { t } = useTranslation('about')
 
   return (
     <>
       <Section
-        title={t('today.title')}
+        title={title || t('today.title')}
         buttonTitle={''}
         className={textSection()}
       >
         <Grid className={undefined} >
-          <Col className={undefined} 
+          <Col className={undefined}
             xs={{ span: 10, start: 2 }}
             md={{ span: 10, start: 2 }}
             lg={{ span: 10, start: 2 }}
           >
             <TextSection>
-              <p>{t('today.description')}</p>
+              <p>{description || t('today.description')}</p>
             </TextSection>
           </Col>
         </Grid>

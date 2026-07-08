@@ -16,6 +16,8 @@ export type NewsInfo = {
   bigPicture: boolean
   nextSlug: string | null
   prevSlug: string | null
+  metaTitle?: string
+  metaDescription?: string
 }
 
 export enum NewsType {
@@ -119,7 +121,9 @@ export const mapFromBackendNews = ({
   external_link,
   big_picture,
   next_slug = null,
-  prev_slug = null
+  prev_slug = null,
+  metaTitle = null,
+  metaDescription = null
 }) => {
   try {
     let formattedDate = ''
@@ -140,7 +144,9 @@ export const mapFromBackendNews = ({
       image: picture,
       bigPicture: big_picture,
       nextSlug: next_slug,
-      prevSlug: prev_slug
+      prevSlug: prev_slug,
+      metaTitle,
+      metaDescription
     }
   } catch (e) {
     console.error(e)

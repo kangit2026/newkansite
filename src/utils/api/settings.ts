@@ -17,9 +17,26 @@ export type SiteSettings = {
     metaTitle: string | null
     metaDescription: string | null
     ogImage: string | null
+    video: string | null
     motto: string | null
     awardsTitle: string | null
     awards: { value: number | null; description: string | null }[]
+  }
+  news: {
+    metaTitle: string | null
+    metaDescription: string | null
+  }
+  projects: {
+    metaTitle: string | null
+    metaDescription: string | null
+  }
+  commercialAd: {
+    title: string | null
+    link: string | null
+  }
+  projectAd: {
+    title: string | null
+    link: string | null
   }
 }
 
@@ -40,9 +57,26 @@ export const defaultSettings: SiteSettings = {
     metaTitle: null,
     metaDescription: null,
     ogImage: null,
+    video: null,
     motto: null,
     awardsTitle: null,
     awards: []
+  },
+  news: {
+    metaTitle: null,
+    metaDescription: null
+  },
+  projects: {
+    metaTitle: null,
+    metaDescription: null
+  },
+  commercialAd: {
+    title: null,
+    link: null
+  },
+  projectAd: {
+    title: null,
+    link: null
   }
 }
 
@@ -65,12 +99,29 @@ const mapFromBackendSettings = (data): SiteSettings => {
         metaTitle: data.home?.meta_title || null,
         metaDescription: data.home?.meta_description || null,
         ogImage: data.home?.og_image || null,
+        video: data.home?.video || null,
         motto: data.home?.motto || null,
         awardsTitle: data.home?.awards_title || null,
         awards: (data.home?.awards || []).map((a) => ({
           value: a?.value ?? null,
           description: a?.description || null
         }))
+      },
+      news: {
+        metaTitle: data.news?.meta_title || null,
+        metaDescription: data.news?.meta_description || null
+      },
+      projects: {
+        metaTitle: data.projects?.meta_title || null,
+        metaDescription: data.projects?.meta_description || null
+      },
+      commercialAd: {
+        title: data.commercial_ad?.title || null,
+        link: data.commercial_ad?.link || null
+      },
+      projectAd: {
+        title: data.project_ad?.title || null,
+        link: data.project_ad?.link || null
       }
     }
   } catch (e) {

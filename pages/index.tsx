@@ -28,11 +28,13 @@ const parsePartnerships = async () => {
 export default function Home({
   news,
   projects,
-  home
+  home,
+  commercialAd
 }: {
   news: any
   projects: any
   home?: SiteSettings['home']
+  commercialAd?: SiteSettings['commercialAd']
 }) {
   const [partnerships, setPartnerships] = useState([])
 
@@ -71,6 +73,7 @@ export default function Home({
         motto={home?.motto}
         awardsTitle={home?.awardsTitle}
         awards={home?.awards}
+        videoUrl={home?.video}
       />
       {projects.length > 0 && (
         <Section
@@ -93,9 +96,9 @@ export default function Home({
         </Section>
       )}
       <Advertisement
-        title={t('common:commercial_advertisement')}
+        title={commercialAd?.title || t('common:commercial_advertisement')}
         className={advertisementCommercial()}
-        link="/platform"
+        link={commercialAd?.link || '/platform'}
         variant="dashed"
       />
       {news.length > 0 && (
@@ -136,7 +139,7 @@ export default function Home({
 export async function getServerSideProps(ctx) {
   const [news, projects, settings] = await Promise.all([
     getNews({ ctx }),
-    getFeaturedProjects({ ctx }),
+    getFeaturedProjects(ctx),
     getSettings({ ctx })
   ])
 
@@ -145,6 +148,7 @@ export async function getServerSideProps(ctx) {
       news: news?.data,
       projects,
       home: settings?.home || null,
+      commercialAd: settings?.commercialAd || null,
       seo: {
         title: settings?.home?.metaTitle || null,
         description: settings?.home?.metaDescription || null,

@@ -1,4 +1,5 @@
-import { FC, HTMLAttributes } from 'react'
+import { cloneElement, FC, HTMLAttributes, ReactElement } from 'react'
+import Link from 'next/link'
 import { css, styled } from 'stitches.config'
 import { ArrowLink } from '@components/common/ArrowLink'
 import {
@@ -11,7 +12,10 @@ export type PaginationProps = HTMLAttributes<HTMLDivElement> & {
   pagesCount: number
   currentPage: number
   isLoading?: boolean
-  setPage: (page: number) => void
+  setPage?: (page: number) => void
+  // when provided, pagination items render as real crawlable <a href>
+  // links (via next/link) instead of plain clickable divs
+  getHref?: (page: number) => string
   css?: any
 }
 
@@ -20,54 +24,90 @@ export const Pagination: FC<PaginationProps> = ({
   currentPage,
   isLoading,
   setPage,
+  getHref,
   ...props
 }) => {
   const items = formatPaginationItems(
     getPaginationItems(currentPage + 1, pagesCount)
   )
 
+  const withLink = (
+    page: number,
+    disabled: boolean,
+    child: ReactElement,
+    key?: string
+  ) => {
+    if (!getHref || disabled) return cloneElement(child, { key })
+
+    return (
+      <Link href={getHref(page)} passHref key={key}>
+        {child}
+      </Link>
+    )
+  }
+
+  const isPrevDisabled = currentPage === 0
+  const isNextDisabled = currentPage === pagesCount - 1
+
   return (
     <StyledPagination loading={isLoading} {...props}>
-      <ArrowLinkWrapper
-        onClick={() => {
-          currentPage > 0 && setPage(currentPage - 1)
-        }}
-        disabled={currentPage === 0}
-      >
-        <ArrowLink
-          as="div"
-          className="smallLeft"
-          disabled={currentPage === 0}
-        />
-      </ArrowLinkWrapper>
-      {items.map(({ id, title, page }) => (
-        <PageCounter
-          key={id}
-          role={currentPage === page ? 'active' : 'inactive'}
+      {withLink(
+        currentPage - 1,
+        isPrevDisabled,
+        <ArrowLinkWrapper
+          as={getHref ? 'a' : 'div'}
           onClick={() => {
-            page !== null && setPage(page)
+            currentPage > 0 && setPage?.(currentPage - 1)
           }}
-          dots={page === null}
+          disabled={isPrevDisabled}
         >
-          {currentPage === page && isLoading ? (
-            <Spinner className={spinner()} />
-          ) : (
-            title
-          )}
-        </PageCounter>
-      ))}
-      <ArrowLinkWrapper
-        onClick={() => {
-          if (currentPage + 1 < pagesCount) setPage(currentPage + 1)
-        }}
-        disabled={currentPage === pagesCount - 1}
-      >
-        <ArrowLink
-          as="div"
-          className="smallRight"
-          disabled={currentPage === pagesCount - 1}
-        />
-      </ArrowLinkWrapper>
+          <ArrowLink
+            as="div"
+            className="smallLeft"
+            disabled={isPrevDisabled}
+          />
+        </ArrowLinkWrapper>
+      )}
+      {items.map(({ id, title, page }) => {
+        const disabled = page === null
+
+        return withLink(
+          page,
+          disabled,
+          <PageCounter
+            as={getHref && !disabled ? 'a' : 'div'}
+            role={currentPage === page ? 'active' : 'inactive'}
+            onClick={() => {
+              !disabled && setPage?.(page)
+            }}
+            dots={disabled}
+          >
+            {currentPage === page && isLoading ? (
+              <Spinner className={spinner()} />
+            ) : (
+              title
+            )}
+          </PageCounter>,
+          id
+        )
+      })}
+      {withLink(
+        currentPage + 1,
+        isNextDisabled,
+        <ArrowLinkWrapper
+          as={getHref ? 'a' : 'div'}
+          onClick={() => {
+            if (currentPage + 1 < pagesCount) setPage?.(currentPage + 1)
+          }}
+          disabled={isNextDisabled}
+        >
+          <ArrowLink
+            as="div"
+            className="smallRight"
+            disabled={isNextDisabled}
+          />
+        </ArrowLinkWrapper>
+      )}
     </StyledPagination>
   )
 }

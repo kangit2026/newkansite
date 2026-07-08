@@ -70,7 +70,9 @@ export const Projects: FC<{
   projects: { data: Project[]; total: number }
   categories: ProjectCategory[]
   featured: Project[]
-}> = ({ projects, featured, categories }) => {
+  page?: number
+  categoryId?: number | null
+}> = ({ projects, featured, categories, page, categoryId }) => {
   const [currentSlide, setCurrentSlide] = useState(0)
   const sliderRef = useRef(null)
   const { t } = useTranslation('projects')
@@ -126,6 +128,8 @@ export const Projects: FC<{
       <ProjectsList
         projects={projects}
         categories={categories}
+        page={page}
+        categoryId={categoryId}
         className={list()}
       />
     </Wrapper>

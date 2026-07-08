@@ -8,6 +8,8 @@ class MyDocument extends Document {
     return (
       <Html>
         <Head>
+          {/* сайт ще в розробці — знімемо, коли будемо готові до індексації */}
+          <meta name="robots" content="noindex, nofollow" />
           <link rel="icon" href="/favicon.ico" />
           <link
             rel="apple-touch-icon"

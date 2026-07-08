@@ -2,7 +2,11 @@ import React, { FC, useRef, useState, useEffect } from 'react'
 import PlayIcon from '@assets/home/play.svg?svgr'
 import { styled } from 'stitches.config'
 
-export const ManifestVideo: FC = () => {
+export type ManifestVideoProps = {
+  src?: string | null
+}
+
+export const ManifestVideo: FC<ManifestVideoProps> = ({ src }) => {
   const [isPaused, setIsPaused] = useState(true)
   const videoRef = useRef(null)
 
@@ -38,7 +42,10 @@ export const ManifestVideo: FC = () => {
         preload="metadata"
         // poster={require('@assets/home/poster.jpg?inline').default}
       >
-        <source src="/home/manifest.mp4#t=0.001" type="video/mp4" />
+        <source
+          src={`${src || '/home/manifest.mp4'}#t=0.001`}
+          type="video/mp4"
+        />
       </Video>
 
       <PlayButton visible={isPaused}>
