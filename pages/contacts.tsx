@@ -3,23 +3,36 @@ import { Contact } from '../src/components/home/Contact'
 import { styled } from 'stitches.config'
 import Map from '../src/components/common/Map'
 import { useTheme } from 'next-themes'
+import { getContactsPage, ContactsPageContent } from '@utils/api/contactsPage'
 
-const Contacts = () => {
+type Props = {
+  content: ContactsPageContent
+}
+
+const Contacts = ({ content }: Props) => {
   const { resolvedTheme } = useTheme()
-  const coords = {
-    lat: 50.421947831581264,
-    lng: 30.553262857781412
-  }
+
+  const mapEnabled =
+    content?.map?.enabled &&
+    content.map.lat != null &&
+    content.map.lng != null
+
+  const mapComponent = mapEnabled ? (
+    <MapWrapper>
+      <Map
+        lat={content.map.lat}
+        lng={content.map.lng}
+        zoom={content.map.zoom}
+        theme={resolvedTheme}
+      />
+    </MapWrapper>
+  ) : (
+    <MapWrapper />
+  )
 
   return (
     <div>
-      <Contact
-        component={
-          <MapWrapper>
-            {/* <Map {...coords} zoom={16} theme={resolvedTheme} /> */}
-          </MapWrapper>
-        }
-      />
+      <Contact component={mapComponent} content={content} />
     </div>
   )
 }
@@ -36,5 +49,20 @@ const MapWrapper = styled('div', {
     }
   }
 })
+
+export async function getServerSideProps(ctx) {
+  const content = await getContactsPage(ctx)
+
+  return {
+    props: {
+      content,
+      seo: {
+        title: content?.metaTitle || null,
+        description: content?.metaDescription || null,
+        ogImage: content?.ogImage || null
+      }
+    }
+  }
+}
 
 export default Contacts

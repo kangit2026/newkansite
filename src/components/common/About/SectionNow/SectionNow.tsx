@@ -3,6 +3,7 @@ import { Section } from '@components/home/Section'
 import { css, styled } from 'stitches.config'
 import { Col, Grid } from '@ui'
 import useTranslation from 'next-translate/useTranslation'
+import { RichTextContent } from '@components/common/RichTextContent'
 
 export const SectionNow: FC<{
   title?: string | null
@@ -24,7 +25,7 @@ export const SectionNow: FC<{
             lg={{ span: 10, start: 2 }}
           >
             <TextSection>
-              <p>{description || t('today.description')}</p>
+              <RichTextContent html={description || t('today.description')} />
             </TextSection>
           </Col>
         </Grid>

@@ -12,6 +12,7 @@ import { Section } from '@components/home/Section'
 import { ScrollAnchor } from '../ScrollAnchor'
 import { RecommendedProjects } from '@components/projects'
 import { AboutPageContent } from '@utils/api/about'
+import { RichTextContent } from '@components/common/RichTextContent'
 
 export const About: FC<{
   projects: any
@@ -57,8 +58,8 @@ export const About: FC<{
             }}
           />
           <TextContent>
-            <p>{content?.history || t('history')}</p>
-            <p>{content?.specialists || t('specialists')}</p>
+            <RichTextContent html={content?.history || t('history')} />
+            <RichTextContent html={content?.specialists || t('specialists')} />
           </TextContent>
         </Col>
       </Grid>

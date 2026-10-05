@@ -3,6 +3,8 @@ import React, { CSSProperties, FC, useEffect, useState } from 'react'
 import { styled, css } from 'stitches.config'
 import cx from 'classnames'
 import { gridConfig } from '@utils/constants'
+import ArrowRightIcon from '@assets/services/arrow-right.svg?svgr'
+import GlobusIcon from '@assets/services/globus.svg?svgr'
 
 type ImageStyleProperties = CSSProperties & {
   '--x': string
@@ -12,7 +14,7 @@ type ImageStyleProperties = CSSProperties & {
 export const ListServices: FC<{
   services: {
     text: string
-    icon: any
+    external: boolean
     image: string
     link: string
   }[]
@@ -52,39 +54,43 @@ export const ListServices: FC<{
 
   return (
     <ContainerWrapper>
-      {services.map(({ text, icon: Icon, image, link }, index) => (
-        <Link key={`${text}.${link}`} href={link} passHref={true}>
-          <div className={contentBlock()}>
-            <div className={linkImg()}>
-              <ImageContent
-                src={image}
-                alt=" "
-                style={
-                  {
-                    '--x': `${coords[0]}px`,
-                    '--y': `${coords[1]}px`
-                  } as ImageStyleProperties
+      {services.map(({ text, external, image, link }, index) => {
+        const Icon = external ? GlobusIcon : ArrowRightIcon
+
+        return (
+          <Link key={`${text}.${link}`} href={link} passHref={true}>
+            <div className={contentBlock()}>
+              <div className={linkImg()}>
+                <ImageContent
+                  src={image}
+                  alt=" "
+                  style={
+                    {
+                      '--x': `${coords[0]}px`,
+                      '--y': `${coords[1]}px`
+                    } as ImageStyleProperties
+                  }
+                />
+              </div>
+              <TextContent special={index == 2}>{text}</TextContent>
+              <div
+                className={
+                  index === services.length - 1
+                    ? lastItemWrapper()
+                    : imgWrapper()
                 }
-              />
+              >
+                <Icon
+                  className={cx(
+                    index === services.length - 1 && lastItem(),
+                    icon()
+                  )}
+                />
+              </div>
             </div>
-            <TextContent special={index == 2}>{text}</TextContent>
-            <div
-              className={
-                index === services.length - 1
-                  ? lastItemWrapper()
-                  : imgWrapper()
-              }
-            >
-              <Icon.default
-                className={cx(
-                  index === services.length - 1 && lastItem(),
-                  icon()
-                )}
-              />
-            </div>
-          </div>
-        </Link>
-      ))}
+          </Link>
+        )
+      })}
     </ContainerWrapper>
   )
 }

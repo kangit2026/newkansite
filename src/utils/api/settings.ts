@@ -30,6 +30,10 @@ export type SiteSettings = {
     metaTitle: string | null
     metaDescription: string | null
   }
+  services: {
+    metaTitle: string | null
+    metaDescription: string | null
+  }
   commercialAd: {
     title: string | null
     link: string | null
@@ -67,6 +71,10 @@ export const defaultSettings: SiteSettings = {
     metaDescription: null
   },
   projects: {
+    metaTitle: null,
+    metaDescription: null
+  },
+  services: {
     metaTitle: null,
     metaDescription: null
   },
@@ -114,6 +122,10 @@ const mapFromBackendSettings = (data): SiteSettings => {
       projects: {
         metaTitle: data.projects?.meta_title || null,
         metaDescription: data.projects?.meta_description || null
+      },
+      services: {
+        metaTitle: data.services?.meta_title || null,
+        metaDescription: data.services?.meta_description || null
       },
       commercialAd: {
         title: data.commercial_ad?.title || null,

@@ -114,7 +114,7 @@ const generateFontFaces = (config: FontSettings[]) => {
                   (format) => `url('${filePath}') format('${format}')`
                 )
                 .join(', '),
-              fontDisplay: 'swap',
+              fontDisplay: 'swap' as const,
               fontWeight: `${font.weights[weight]}`,
               fontStyle: style
             }

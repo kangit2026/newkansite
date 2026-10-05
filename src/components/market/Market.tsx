@@ -3,52 +3,77 @@ import { Col, Grid } from '@ui'
 import { css, styled } from 'stitches.config'
 import { AdaptiveImage } from '@components/common/AdaptiveImage'
 import useTranslation from 'next-translate/useTranslation'
+import type { MarketPageContent } from '@utils/api/market'
 
-const phone = '+38 (067) 579-98-63'
+const defaultPhone = '+38 (067) 579-98-63'
 
-const Market: FC = () => {
+type Props = {
+  content?: MarketPageContent
+}
+
+const Market: FC<Props> = ({ content }) => {
   const { t } = useTranslation('market')
-  const pros: string[] =
+
+  const fallbackPros: string[] =
     t('pros.items', null, {
       returnObjects: true,
       fallback: ''
     }) || []
 
+  const pros =
+    content?.prosItems?.length > 0 ? content.prosItems : fallbackPros
+
+  const badge = content?.badge || t('new_service')
+  const title = content?.title || t('title')
+  const sellText = content?.sellText || t('sell')
+  const question = content?.question || t('question')
+  const answer = content?.answer || t('answer')
+  const contactLabel = content?.contactLabel || t('contact')
+  const prosTitle = content?.prosTitle || t('pros.title')
+  const trustText = content?.trustText || t('trust')
+  const phone = content?.phone || defaultPhone
+
   return (
     <Wrapper>
       <Background>
-        <AdaptiveImage
-          className={bgImage()}
-          srcSet={require('@assets/market/bg.png?srcset')}
-          themed={false}
-        />
+        {content?.heroImage ? (
+          <img src={content.heroImage} alt="" className={bgImage()} />
+        ) : (
+          <AdaptiveImage
+            className={bgImage()}
+            srcSet={require('@assets/market/bg.png?srcset')}
+            themed={false}
+          />
+        )}
         <Overlay />
-        <Grid className={undefined} >
-          <Col className={undefined}  xs={{ span: 10, start: 2 }}>
+        <Grid className={undefined}>
+          <Col className={undefined} xs={{ span: 10, start: 2 }}>
             <Service>
-              <span>{t('new_service')}</span>
+              <span>{badge}</span>
             </Service>
-            <Title>{t('title')}</Title>
+            <Title>{title}</Title>
           </Col>
         </Grid>
       </Background>
-      <Grid className={undefined} >
-        <Col className={undefined} 
+      <Grid className={undefined}>
+        <Col
+          className={undefined}
           xs={{ span: 10, start: 2 }}
           md={{ span: 3, start: 2 }}
           lg={{ span: 5, start: 2 }}
         >
-          <Text>{t('sell')}</Text>
+          <Text>{sellText}</Text>
         </Col>
-        <Col className={undefined} 
+        <Col
+          className={undefined}
           xs={12}
           md={{ span: 6, start: 6 }}
           lg={{ span: 5, start: 7 }}
         >
           <Contact>
             <span>
-              {t('question')}
-              <br /> {t('answer')}
+              {question}
+              <br /> {answer}
             </span>
             <svg
               width="18"
@@ -62,28 +87,28 @@ const Market: FC = () => {
                 fill="white"
               />
             </svg>
-            <span style={{ marginTop: 0 }}>{t('contact')}:</span>
+            <span style={{ marginTop: 0 }}>{contactLabel}:</span>
             <Number>{phone}</Number>
           </Contact>
         </Col>
         {pros.length > 0 && (
           <>
-            <Col className={undefined} 
+            <Col
+              className={undefined}
               xs={{ span: 10, start: 2 }}
               md={{ span: 7, start: 2 }}
               lg={{ span: 5, start: 2 }}
             >
-              <SemiTitle className={worth()}>
-                {t('pros.title')}:
-              </SemiTitle>
+              <SemiTitle className={worth()}>{prosTitle}:</SemiTitle>
             </Col>
-            <Col className={undefined} 
+            <Col
+              className={undefined}
               xs={{ span: 10, start: 2 }}
               md={{ span: 7, start: 2 }}
             >
               <Pros>
                 {pros.map((item, index) => (
-                  <ProsItem key={item}>
+                  <ProsItem key={`${item}-${index}`}>
                     - {item}
                     {index == pros.length - 1 ? '.' : ';'}
                   </ProsItem>
@@ -92,8 +117,8 @@ const Market: FC = () => {
             </Col>
           </>
         )}
-        <Col className={undefined}  xs={{ span: 10, start: 2 }}>
-          <SemiTitle>{t('trust')}</SemiTitle>
+        <Col className={undefined} xs={{ span: 10, start: 2 }}>
+          <SemiTitle>{trustText}</SemiTitle>
         </Col>
       </Grid>
     </Wrapper>

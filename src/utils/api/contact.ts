@@ -1,6 +1,16 @@
 import axios from 'axios'
 
-export const contact = (data) => {
+export type ContactFormPayload = {
+  name: string
+  phone: string
+  email: string
+  message: string
+  website?: string
+  recaptcha_token?: string
+  source_page?: string
+}
+
+export const contact = (data: ContactFormPayload) => {
   return axios({
     method: 'post',
     url: '/contact',

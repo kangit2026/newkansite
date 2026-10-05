@@ -4,6 +4,7 @@ import { styled, css } from 'stitches.config'
 import Image from 'next/image'
 import Link from 'next/link'
 import { formatLink } from '@utils/helpers'
+import { RichTextContent } from '@components/common/RichTextContent'
 
 export const ContentNews: FC<{
   title: string
@@ -21,7 +22,9 @@ export const ContentNews: FC<{
       <Col className={undefined}  xs={{ span: 12, start: 2 }} lg={{ span: 5, start: 7 }}>
         <div className={container()}>
           <ContentText>
-            <Paragraph>{description}</Paragraph>
+            <Paragraph>
+              <RichTextContent html={description} />
+            </Paragraph>
             {link && (
               <Link href={link} passHref={true}>
                 <LinkContainer
@@ -108,10 +111,9 @@ const ContentText = styled('div', {
 
 })
 
-const Paragraph = styled('p', {
+const Paragraph = styled('div', {
   fontSize: '16px',
   lineHeight: '1.64em',
-  whiteSpace:'pre-wrap',
   pr: 31,
   mt: 40,
   ml: 2,

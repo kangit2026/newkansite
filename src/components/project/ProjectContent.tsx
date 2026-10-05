@@ -17,6 +17,7 @@ import { gridConfig } from '@utils/constants'
 import { mapToYoutubeUrl } from '@utils/helpers'
 import useTranslation from 'next-translate/useTranslation'
 import { ScrollAnchor } from '@components/common/ScrollAnchor'
+import { RichTextContent } from '@components/common/RichTextContent'
 
 export type ProjectContentProps = HTMLAttributes<HTMLDivElement> & {
   details: ProjectType
@@ -240,7 +241,9 @@ export const ProjectContent = forwardRef<
               title={title}
               className={breadcrumbsSection()}
             />
-            <Text>{description}</Text>
+            <Text>
+              <RichTextContent html={description} />
+            </Text>
             <DescriptionFooter>
               <Arrow className={descriptionArrow()} />
               {logo && (
@@ -503,9 +506,7 @@ const Description = styled('div', {
 })
 
 const Text = styled('div', {
-  // textAlign: 'justify',
   lineHeight: '1.56em',
-  whiteSpace: 'pre-wrap',
 
   '@md': {
     lineHeight: '1.5em'

@@ -4,9 +4,11 @@ import React, { FC } from 'react'
 import { css } from 'stitches.config'
 import { ListServices } from './ListServices/ListServices'
 import useTranslation from 'next-translate/useTranslation'
-import { services } from '@utils/constants/services'
+import { ServiceItem } from '@utils/api/services'
 
-export const Services: FC = () => {
+export const Services: FC<{ services: ServiceItem[] }> = ({
+  services
+}) => {
   const { t } = useTranslation('services')
 
   return (
@@ -19,11 +21,12 @@ export const Services: FC = () => {
       <Grid className={undefined} >
         <Col className={undefined}  xs={{ span: 10, start: 2 }}>
           <ListServices
-            services={services.map(({ text, icon, image, link }) => ({
-              icon,
+            services={services.map(({ id, title, image, link, external }) => ({
+              id,
               image,
               link,
-              text: t(text)
+              external,
+              text: title
             }))}
           />
         </Col>

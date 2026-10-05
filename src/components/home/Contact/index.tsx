@@ -6,17 +6,26 @@ import { useMutation } from 'react-query'
 import { contact } from '@utils/api/contact'
 import { Spinner } from '@components/Spinner'
 import { ErrorMessage } from '@components/common/ErrorMessage'
+import type { ContactsPageContent } from '@utils/api/contactsPage'
+import { getRecaptchaToken } from '@utils/recaptcha'
+import { useRouter } from 'next/router'
 
-export type ContactProps = HTMLAttributes<HTMLImageElement> & {
+export type ContactProps = Omit<
+  HTMLAttributes<HTMLImageElement>,
+  'content'
+> & {
   component: any
+  content?: ContactsPageContent
 }
 
 export const Contact: FC<ContactProps> = ({
-  component
+  component,
+  content
 }: ContactProps) => {
   const { t } = useTranslation('contacts')
+  const router = useRouter()
   const {
-    mutate,
+    mutateAsync,
     isLoading,
     isError,
     isSuccess,
@@ -27,21 +36,21 @@ export const Contact: FC<ContactProps> = ({
     {
       type: 'name',
       name: 'name',
-      placeholder: t('name')
+      placeholder: content?.nameLabel || t('name')
     },
     {
       type: 'phone',
       name: 'phone',
-      placeholder: t('phone')
+      placeholder: content?.phoneLabel || t('phone')
     },
     {
       type: 'email',
       name: 'email',
-      placeholder: t('email')
+      placeholder: content?.emailLabel || t('email')
     },
     {
       name: 'message',
-      placeholder: t('message'),
+      placeholder: content?.messageLabel || t('message'),
       component: Message,
       as: 'textarea'
     }
@@ -51,13 +60,14 @@ export const Contact: FC<ContactProps> = ({
     <Outer>
       {component}
       <Wrapper>
-        <Title>{t('heading')}</Title>
+        <Title>{content?.heading || t('heading')}</Title>
         <Formik
           initialValues={{
             name: '',
             phone: '',
             email: '',
-            message: ''
+            message: '',
+            website: ''
           }}
           validateOnChange={false}
           validateOnBlur={false}
@@ -90,9 +100,29 @@ export const Contact: FC<ContactProps> = ({
 
             return errors
           }}
-          onSubmit={(values, { validateForm }) => {
-            validateForm(values)
-            mutate(values)
+          onSubmit={async (values, { validateForm, setSubmitting }) => {
+            const errors = await validateForm(values)
+            if (errors && Object.keys(errors).length > 0) {
+              return
+            }
+
+            setSubmitting(true)
+            try {
+              const recaptcha_token = await getRecaptchaToken('contact')
+              await mutateAsync({
+                name: values.name,
+                phone: values.phone,
+                email: values.email,
+                message: values.message,
+                website: values.website,
+                recaptcha_token,
+                source_page: router.asPath?.split('?')[0] || '/contacts'
+              })
+            } catch {
+              // помилка мережі / reCAPTCHA / API — isError у mutation
+            } finally {
+              setSubmitting(false)
+            }
           }}
         >
           {({
@@ -106,7 +136,7 @@ export const Contact: FC<ContactProps> = ({
           }) => (
             <FormWrapper>
               <SuccessMessage visible={isSuccess}>
-                <SuccessText>{t('success')}</SuccessText>
+                <SuccessText>{content?.successMessage || t('success')}</SuccessText>
                 <Submit
                   css={{ mt: 70, '@lg': { mb: 50 } }}
                   type="button"
@@ -115,12 +145,21 @@ export const Contact: FC<ContactProps> = ({
                     resetForm()
                   }}
                 >
-                  {t('send_again')}
+                  {content?.sendAgainLabel || t('send_again')}
                 </Submit>
               </SuccessMessage>
 
               <Form onSubmit={handleSubmit}>
                 <div className={formWrapper()}>
+                  <Honeypot
+                    type="text"
+                    name="website"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    value={values.website}
+                    onChange={handleChange}
+                    aria-hidden="true"
+                  />
                   {inputs.map(
                     ({ name, component = Input, ...props }) => {
                       const InputComponent: any = component
@@ -146,13 +185,13 @@ export const Contact: FC<ContactProps> = ({
                   <ErrorMessage
                     css={{ pb: 25 }}
                     isVisible={isError}
-                    text={t('error')}
+                    text={content?.errorMessage || t('error')}
                   />
                   <Submit type="submit">
                     {isLoading && (
                       <Spinner css={{ m: '0 13px -4px 0' }} />
                     )}
-                    {t('send')}
+                    {content?.sendLabel || t('send')}
                   </Submit>
                 </div>
               </Form>
@@ -199,6 +238,15 @@ const SuccessText = styled('div', {
 
 const FormWrapper = styled('div', {
   position: 'relative'
+})
+
+const Honeypot = styled('input', {
+  position: 'absolute',
+  left: '-9999px',
+  width: 1,
+  height: 1,
+  opacity: 0,
+  pointerEvents: 'none'
 })
 
 const Form = styled('form', {})

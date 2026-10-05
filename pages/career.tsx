@@ -10,14 +10,21 @@ import {
   vacanciesCount,
   Vacancy
 } from '@utils/api/vacancies'
+import { getCareerPage, CareerPageContent } from '@utils/api/career'
 import { Table } from '@components/common/Table'
 import { useQuery } from 'react-query'
 import { ScrollAnchor } from '@components/common/ScrollAnchor'
 import { scrollToElement } from '@utils/helpers/animations'
+import { RichTextContent } from '@components/common/RichTextContent'
 
 export default function Career({
   vacancies: initialData,
-  categories = []
+  categories = [],
+  content
+}: {
+  vacancies: { data: Vacancy[]; total: number }
+  categories: { id: number; label: string }[]
+  content?: CareerPageContent
 }) {
   const [selectedCategories, setSelectedCategories] = useState<
     string[]
@@ -26,6 +33,12 @@ export default function Career({
   const headingRef = useRef(null)
   const [canFetch, setCanFetch] = useState(false)
   const { t } = useTranslation('career')
+
+  const heading = content?.heading || t('heading')
+  const cityLabel = content?.cityLabel || t('city')
+  const allCategoriesLabel =
+    content?.allCategoriesLabel || t('all_categories')
+  const introText = content?.introText || t('text')
 
   useEffect(() => {
     if (currentPage > 0) {
@@ -71,14 +84,14 @@ export default function Career({
           <Col className={undefined} xs={{ span: 10, start: 2 }}>
             <Heading>
               <ScrollAnchor ref={headingRef} />
-              <Title>{t('heading')}</Title>
+              <Title>{heading}</Title>
 
               <Filters>
-                <FiltersCity>{t('city')}</FiltersCity>
+                <FiltersCity>{cityLabel}</FiltersCity>
                 <SelectBox
                   items={categories}
                   selectedItems={selectedCategories}
-                  placeholder={t('all_categories')}
+                  placeholder={allCategoriesLabel}
                   setItems={(items: string[]) =>
                     setSelectedCategories(items)
                   }
@@ -106,11 +119,11 @@ export default function Career({
             <Col className={undefined}  xs={{ span: 10, start: 2 }}>
               <Heading>
                 <Filters style={{ display: 'flex', marginTop: 0 }}>
-                  <FiltersCity>{t('city')}</FiltersCity>
+                  <FiltersCity>{cityLabel}</FiltersCity>
                   <SelectBox
                     items={categories}
                     selectedItems={selectedCategories}
-                    placeholder={t('all_categories')}
+                    placeholder={allCategoriesLabel}
                     setItems={(items: string[]) =>
                       setSelectedCategories(items)
                     }
@@ -137,7 +150,9 @@ export default function Career({
       </Wrapper>
       <Grid className={undefined}>
         <Col className={undefined}  xs={12} md={{ span: 10, start: 2 }}>
-          <CareerText>{t('text')}</CareerText>
+          <CareerText>
+            <RichTextContent html={introText} />
+          </CareerText>
           <Table
             items={vacancies}
             external={true}
@@ -159,16 +174,23 @@ export default function Career({
   )
 }
 
-export async function getServerSideProps() {
-  const [vacancies, categories] = await Promise.all([
-    getVacancies({}),
-    getVacanciesCategories()
+export async function getServerSideProps(ctx) {
+  const [vacancies, categories, content] = await Promise.all([
+    getVacancies({ ctx }),
+    getVacanciesCategories(ctx),
+    getCareerPage(ctx)
   ])
 
   return {
     props: {
       vacancies: vacancies ?? { data: [], total: 0 },
-      categories: categories ?? []
+      categories: categories ?? [],
+      content,
+      seo: {
+        title: content?.metaTitle || null,
+        description: content?.metaDescription || null,
+        ogImage: content?.ogImage || null
+      }
     }
   }
 }
