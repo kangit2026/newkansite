@@ -5,6 +5,8 @@ import useTranslation from 'next-translate/useTranslation'
 
 const phones = ['+38 (044) 247-57-48', '+38 (044) 247-57-49']
 
+const toTelHref = (phone: string) => `tel:${phone.replace(/[^\d+]/g, '')}`
+
 const Rent = () => {
   const { t } = useTranslation('rent')
 
@@ -15,7 +17,9 @@ const Rent = () => {
           <RentBox>
             <Upper>{t('title')}:</Upper>
             {phones.map((phone) => (
-              <Number key={phone}>{phone}</Number>
+              <Number as="a" key={phone} href={toTelHref(phone)}>
+                {phone}
+              </Number>
             ))}
           </RentBox>
         }
@@ -68,6 +72,8 @@ const Upper = styled('div', {
 
 const Number = styled('div', {
   margin: '32px auto 0 auto',
+  justifyContent: 'center',
+  textDecoration: 'none',
   display: 'flex',
   alignItems: 'center',
   textAlign: 'center',

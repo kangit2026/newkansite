@@ -16,6 +16,7 @@ export const ListServices: FC<{
     text: string
     external: boolean
     image: string
+    imageAlt?: string | null
     link: string
   }[]
 }> = ({ services }) => {
@@ -54,7 +55,7 @@ export const ListServices: FC<{
 
   return (
     <ContainerWrapper>
-      {services.map(({ text, external, image, link }, index) => {
+      {services.map(({ text, external, image, imageAlt, link }, index) => {
         const Icon = external ? GlobusIcon : ArrowRightIcon
 
         return (
@@ -63,7 +64,7 @@ export const ListServices: FC<{
               <div className={linkImg()}>
                 <ImageContent
                   src={image}
-                  alt=" "
+                  alt={imageAlt || text}
                   style={
                     {
                       '--x': `${coords[0]}px`,

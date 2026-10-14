@@ -21,9 +21,10 @@ export const Services: FC<{ services: ServiceItem[] }> = ({
       <Grid className={undefined} >
         <Col className={undefined}  xs={{ span: 10, start: 2 }}>
           <ListServices
-            services={services.map(({ id, title, image, link, external }) => ({
+            services={services.map(({ id, title, image, imageAlt, link, external }) => ({
               id,
               image,
+              imageAlt,
               link,
               external,
               text: title

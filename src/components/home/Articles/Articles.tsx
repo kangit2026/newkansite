@@ -88,6 +88,7 @@ const Articles: FC<ArticlesProps> = ({
                     title,
                     link,
                     image,
+                    imageAlt,
                     bigPicture,
                     nextSlug,
                     prevSlug
@@ -102,6 +103,7 @@ const Articles: FC<ArticlesProps> = ({
                       title={title}
                       link={link}
                       image={image}
+                      imageAlt={imageAlt}
                       bigPicture={bigPicture}
                       nextSlug={nextSlug}
                       prevSlug={prevSlug}
@@ -123,6 +125,7 @@ const Articles: FC<ArticlesProps> = ({
                       title,
                       link,
                       image,
+                      imageAlt,
                       bigPicture,
                       nextSlug,
                       prevSlug
@@ -137,6 +140,7 @@ const Articles: FC<ArticlesProps> = ({
                         title={title}
                         link={link}
                         image={image}
+                      imageAlt={imageAlt}
                         bigPicture={bigPicture}
                         nextSlug={nextSlug}
                         prevSlug={prevSlug}

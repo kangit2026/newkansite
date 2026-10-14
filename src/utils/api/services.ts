@@ -6,6 +6,7 @@ export type ServiceItem = {
   link: string
   external: boolean
   image: string | null
+  imageAlt?: string | null
 }
 
 const mapFromBackendService = (data): ServiceItem | null => {
@@ -15,7 +16,8 @@ const mapFromBackendService = (data): ServiceItem | null => {
       title: data.title,
       link: data.link,
       external: !!data.external,
-      image: data.image || null
+      image: data.image || null,
+      imageAlt: data.imageAlt || null
     }
   } catch (e) {
     console.error(e)

@@ -15,6 +15,7 @@ export const HeaderNewsItem: FC<{ details: NewsInfo }> = ({
     description,
     tags,
     image,
+    imageAlt,
     externalLink,
     prevSlug,
     nextSlug
@@ -63,6 +64,7 @@ export const HeaderNewsItem: FC<{ details: NewsInfo }> = ({
           title={title}
           description={description}
           image={image}
+          imageAlt={imageAlt}
           link={externalLink}
         />
       </Grid>

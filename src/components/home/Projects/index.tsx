@@ -15,13 +15,14 @@ export type ProjectsProps = HTMLAttributes<HTMLDivElement> & {
 
 export const Projects: FC<ProjectsProps> = ({ projects = [] }) => {
   const projectsList = projects.map(
-    ({ id, title, image, phone, phoneLabel, features, link }) => (
+    ({ id, title, image, imageAlt, phone, phoneLabel, features, link }) => (
       <ProjectCard
         key={id}
         slideable={false}
         onLeft={() => {}}
         onRight={() => {}}
         image={image}
+        imageAlt={imageAlt}
         title={title}
         phone={phone}
         phoneLabel={phoneLabel}

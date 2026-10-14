@@ -28,13 +28,14 @@ export const RecommendedProjects: FC<{
   onRight = () => {}
 }) => {
   const projectsList = projects.map(
-    ({ id, title, image, phone, phoneLabel, features, link }) => (
+    ({ id, title, image, imageAlt, phone, phoneLabel, features, link }) => (
       <ProjectCard
         key={title}
         slideable={true}
         onLeft={onLeft}
         onRight={onRight}
         image={image}
+        imageAlt={imageAlt}
         title={title}
         phone={phone}
         phoneLabel={phoneLabel}

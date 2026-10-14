@@ -16,7 +16,10 @@ import AnimateHeight from 'react-animate-height'
 import { gridConfig } from '@utils/constants'
 import { mapToYoutubeUrl } from '@utils/helpers'
 import useTranslation from 'next-translate/useTranslation'
+import Link from 'next/link'
 import { ScrollAnchor } from '@components/common/ScrollAnchor'
+
+const toTelHref = (phone: string) => `tel:${phone.replace(/[^\d+]/g, '')}`
 
 export type ProjectContentProps = HTMLAttributes<HTMLDivElement> & {
   details: ProjectType
@@ -139,6 +142,7 @@ export const ProjectContent = forwardRef<
     const address = details?.address
     const website = details?.website
     const logo = details?.logo
+    const logoAlt = details?.logoAlt
     const breadcrumbs = details?.breadcrumbs
     const infrastructure = details?.infrastructure
     const description = details?.description
@@ -171,8 +175,8 @@ export const ProjectContent = forwardRef<
         >
           <ScrollAnchor ref={ref} css={{ '@lg': { top: -134 } }} />
           <Info>
-            <Title>
-              {title}
+            <TitleRow>
+              <Title>{title}</Title>
               <ProjectLink
                 title={t('webpage')}
                 link={website}
@@ -183,7 +187,7 @@ export const ProjectContent = forwardRef<
                   titleLink()
                 )}
               />
-            </Title>
+            </TitleRow>
             <Type>{category}</Type>
             <Features>
               {address && (
@@ -195,10 +199,20 @@ export const ProjectContent = forwardRef<
                 ({ id, title, value }) =>
                   value && (
                     <Field key={id}>
-                      {title}: <Value>{value}</Value>
+                      {title}:{' '}
+                      {id === 'phone' ? (
+                        <PhoneLink href={toTelHref(String(value))}>
+                          {value}
+                        </PhoneLink>
+                      ) : (
+                        <Value>{value}</Value>
+                      )}
                     </Field>
                   )
               )}
+              <Link href="/contacts" passHref>
+                <RequestLink>{t('request')}</RequestLink>
+              </Link>
 
               <Infrastructure>
                 <InfrastructureTitle onClick={() => toggleFeatures()}>
@@ -245,7 +259,12 @@ export const ProjectContent = forwardRef<
               <Arrow className={descriptionArrow()} />
               {logo && (
                 <ProjectLogo>
-                  <ProjectLogoImage src={logo} alt={title} />
+                  <ProjectLogoImage
+                    src={logo}
+                    alt={logoAlt || title}
+                    loading="lazy"
+                    decoding="async"
+                  />
                 </ProjectLogo>
                 // <img src={logo} alt={title} className={logoImage()} />
               )}
@@ -266,12 +285,8 @@ const StyledContent = styled('div', {
   zIndex: 1
 })
 
-const Title = styled('h1', {
-  fontSize: 40,
-  fontWeight: 350,
-
+const TitleRow = styled('div', {
   '@lg': {
-    fontSize: 32,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -280,6 +295,15 @@ const Title = styled('h1', {
       margin: 0,
       width: 180
     }
+  }
+})
+
+const Title = styled('h2', {
+  fontSize: 40,
+  fontWeight: 350,
+
+  '@lg': {
+    fontSize: 32
   }
 })
 
@@ -342,6 +366,32 @@ const Features = styled('div', {
 
 const Value = styled('span', {
   fontWeight: 400
+})
+
+const PhoneLink = styled('a', {
+  fontWeight: 400,
+  color: 'inherit',
+  textDecoration: 'underline',
+  textUnderlineOffset: '3px'
+})
+
+const RequestLink = styled('a', {
+  display: 'block',
+  width: 300,
+  height: 48,
+  backgroundColor: '$nav',
+  color: '$accent',
+  br: 60,
+  lineHeight: '48px',
+  textAlign: 'center',
+  mt: 28,
+  fontSize: 15,
+  fontWeight: 400,
+  textDecoration: 'none',
+
+  '@md': {
+    width: 256
+  }
 })
 
 const Location = styled('div', {

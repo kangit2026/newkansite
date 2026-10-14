@@ -2,6 +2,7 @@ import { get } from '.'
 
 export type MarketPageContent = {
   heroImage: string | null
+  heroImageAlt: string | null
   phone: string | null
   badge: string | null
   title: string | null
@@ -19,6 +20,7 @@ export type MarketPageContent = {
 
 export const defaultMarketPage: MarketPageContent = {
   heroImage: null,
+  heroImageAlt: null,
   phone: null,
   badge: null,
   title: null,
@@ -38,6 +40,7 @@ const mapFromBackend = (data): MarketPageContent => {
   try {
     return {
       heroImage: data.heroImage || null,
+      heroImageAlt: data.heroImageAlt || null,
       phone: data.phone || null,
       badge: data.badge || null,
       title: data.title || null,

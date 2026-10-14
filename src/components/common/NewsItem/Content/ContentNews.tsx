@@ -9,14 +9,15 @@ import { RichTextContent } from '@components/common/RichTextContent'
 export const ContentNews: FC<{
   title: string
   image: string
+  imageAlt?: string | null
   description: string
   link?: string
-}> = ({ title, image, description, link }) => {
+}> = ({ title, image, imageAlt, description, link }) => {
   return (
     <>
       <Col className={stickImage()}  xs={{ span: 12, start: 2 }} lg={{ span: 6, start: 2 }}>
         <ContentImg>
-          <img src={image} alt={title} width="100%" height="100%" />
+          <img src={image} alt={imageAlt || title} width="100%" height="100%" />
         </ContentImg>
       </Col>
       <Col className={undefined}  xs={{ span: 12, start: 2 }} lg={{ span: 5, start: 7 }}>

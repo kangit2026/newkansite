@@ -145,7 +145,7 @@ export const Menu: FC<MenuProps> = ({ isOpened = false }) => {
                 <PhoneIcon>
                   <Phone />
                 </PhoneIcon>
-                +38 (044) 247 57 48
+                <MenuPhone href="tel:+380442475748">+38 (044) 247 57 48</MenuPhone>
               </PhoneNumber>
             </AdditionalItems>
             <SocialButtons>
@@ -354,6 +354,11 @@ const LinkItem = styled('li', {
       mr: 96
     }
   }
+})
+
+const MenuPhone = styled('a', {
+  color: 'inherit',
+  textDecoration: 'none'
 })
 
 const PhoneNumber = styled('div', {

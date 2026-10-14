@@ -64,7 +64,7 @@ export const InsideCommunity = ({ content }: Props) => {
         </VideoWrapper>
 
         {heroImage ? (
-          <img src={heroImage} className={community()} alt="" />
+          <img src={heroImage} className={community()} alt={content?.hero?.imageAlt || heroTitle} />
         ) : (
           <AdaptiveImage
             className={community()}
@@ -81,7 +81,7 @@ export const InsideCommunity = ({ content }: Props) => {
           <ContentImg>
             <Image
               src={complexLogos[0]}
-              alt="KAN"
+              alt={content?.complexLogoAlts?.[0] || 'KAN'}
               layout="fill"
               objectFit="contain"
               width={100}
@@ -91,7 +91,7 @@ export const InsideCommunity = ({ content }: Props) => {
           <ContentImg>
             <Image
               src={complexLogos[1]}
-              alt="KAN"
+              alt={content?.complexLogoAlts?.[1] || 'KAN'}
               layout="fill"
               objectFit="contain"
               width={100}

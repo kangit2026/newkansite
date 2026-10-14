@@ -27,7 +27,7 @@ export const News: FC<NewsProps> = ({ news, ...props }) => {
           <NewsList>
             {news.map(
               (
-                { id, title, date, image, link, tags }: NewsInfo,
+                { id, title, date, image, imageAlt, link, tags }: NewsInfo,
                 i
               ) => (
                 <NewsCard
@@ -35,6 +35,7 @@ export const News: FC<NewsProps> = ({ news, ...props }) => {
                   title={title}
                   date={date}
                   image={image}
+                  imageAlt={imageAlt}
                   link={link}
                   tags={tags}
                   order={i % 2 ? 'even' : 'odd'}

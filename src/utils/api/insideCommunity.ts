@@ -15,6 +15,7 @@ export type InsideCommunityBlock = {
   highlightMedium: string | null
   ctaText: string | null
   image: string | null
+  imageAlt?: string | null
 }
 
 export type InsideCommunityContent = {
@@ -22,11 +23,13 @@ export type InsideCommunityContent = {
     video: string
     imageUk: string | null
     imageEn: string | null
+    imageAlt: string | null
     title: string | null
     subtitle: string | null
     paragraphs: string[]
   }
   complexLogos: string[]
+  complexLogoAlts: (string | null)[]
   philosophy: {
     title: string | null
     subtitle: string | null
@@ -42,11 +45,13 @@ export const defaultInsideCommunityContent: InsideCommunityContent = {
     video: '/inside_community/kan_inside.mp4',
     imageUk: null,
     imageEn: null,
+    imageAlt: null,
     title: null,
     subtitle: null,
     paragraphs: []
   },
   complexLogos: [],
+  complexLogoAlts: [],
   philosophy: {
     title: null,
     subtitle: null
@@ -71,7 +76,8 @@ const mapBlock = (block): InsideCommunityBlock => ({
   highlightBig: block.highlightBig || null,
   highlightMedium: block.highlightMedium || null,
   ctaText: block.ctaText || null,
-  image: block.image || null
+  image: block.image || null,
+  imageAlt: block.imageAlt || null
 })
 
 const mapFromBackend = (data): InsideCommunityContent => {
@@ -81,11 +87,13 @@ const mapFromBackend = (data): InsideCommunityContent => {
         video: data.hero?.video || defaultInsideCommunityContent.hero.video,
         imageUk: data.hero?.imageUk || null,
         imageEn: data.hero?.imageEn || null,
+        imageAlt: data.hero?.imageAlt || null,
         title: data.hero?.title || null,
         subtitle: data.hero?.subtitle || null,
         paragraphs: data.hero?.paragraphs || []
       },
       complexLogos: data.complexLogos || [],
+      complexLogoAlts: data.complexLogoAlts || [],
       philosophy: {
         title: data.philosophy?.title || null,
         subtitle: data.philosophy?.subtitle || null

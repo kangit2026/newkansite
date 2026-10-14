@@ -73,7 +73,7 @@ const PrincipleImage = ({
     return (
       <img
         src={block.image}
-        alt=""
+        alt={block.imageAlt || block.title || ''}
         className={className || space()}
         style={{ width: '100%', objectFit: 'cover' }}
       />

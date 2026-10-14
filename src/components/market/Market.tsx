@@ -4,6 +4,8 @@ import { css, styled } from 'stitches.config'
 import { AdaptiveImage } from '@components/common/AdaptiveImage'
 import type { MarketPageContent } from '@utils/api/market'
 
+const toTelHref = (phone: string) => `tel:${phone.replace(/[^\d+]/g, '')}`
+
 type Props = {
   content?: MarketPageContent
 }
@@ -24,7 +26,7 @@ const Market: FC<Props> = ({ content }) => {
     <Wrapper>
       <Background>
         {content?.heroImage ? (
-          <img src={content.heroImage} alt="" className={bgImage()} />
+          <img src={content.heroImage} alt={content.heroImageAlt || content.title || ''} className={bgImage()} />
         ) : (
           <AdaptiveImage
             className={bgImage()}
@@ -77,7 +79,13 @@ const Market: FC<Props> = ({ content }) => {
             {contactLabel ? (
               <span style={{ marginTop: 0 }}>{contactLabel}:</span>
             ) : null}
-            <Number>{phone}</Number>
+            {phone ? (
+              <Number as="a" href={toTelHref(phone)}>
+                {phone}
+              </Number>
+            ) : (
+              <Number />
+            )}
           </Contact>
         </Col>
         {pros.length > 0 && (
@@ -121,6 +129,7 @@ const Wrapper = styled('div', {
 })
 
 const Number = styled('div', {
+  textDecoration: 'none',
   fontSize: '32px',
   alignItems: 'center',
   textAlign: 'center',

@@ -10,14 +10,15 @@ export const Article: FC<ArticleProps> = ({
   tags,
   title,
   link,
-  image
+  image,
+  imageAlt
 }) => {
   const { t } = useTranslation('news')
 
   return (
               <Link href={link} passHref={true}>
     <div className={`item`} style={{cursor:'pointer'}}>
-      <img src={image} alt={title} className={'illustration'} />
+      <img src={image} alt={imageAlt || title} className={'illustration'} loading="lazy" decoding="async" />
       <div className={`d-flex flex-column stats`}>
         <div className="d-flex justify-content-between">
           <div className={'date'}>{date}</div>

@@ -22,10 +22,12 @@ export type Project = {
   website: string
   description: string
   logo: string
+  logoAlt?: string | null
+  imageAlt?: string | null
   breadcrumbs: BreadCrumb[]
   infrastructure: string[]
   category: string
-  gallery: string[]
+  gallery: { url: string; alt?: string | null }[]
   metaTitle?: string
   metaDescription?: string
 }
@@ -36,7 +38,8 @@ export const mapFromFeaturedBackendProject = ({
   name,
   phone,
   phoneLabel,
-  mainPicture
+  mainPicture,
+  mainPictureAlt
 }) => {
   try {
     return {
@@ -45,6 +48,7 @@ export const mapFromFeaturedBackendProject = ({
       phoneLabel: phoneLabel || null,
       title: name,
       image: mainPicture,
+      imageAlt: mainPictureAlt || null,
       link: `/project/${slug}`
     }
   } catch (e) {
@@ -67,11 +71,13 @@ export const mapFromBackendProject = ({
   fullArea,
   text,
   logoUrl,
+  logoAlt,
   video,
   name,
   phone,
   phoneLabel,
   mainPicture,
+  mainPictureAlt,
   metaTitle,
   metaDescription
 }) => {
@@ -95,11 +101,16 @@ export const mapFromBackendProject = ({
       metaTitle: metaTitle||null,
       metaDescription: metaDescription||null,
       logo: logoUrl||null,
+      logoAlt: logoAlt || null,
       infrastructure: infrastructureItems?.map((i) =>
         getValue(i, 'name', null)
       ),
-      gallery: pictures?.map(({ url }) => url),
+      gallery: pictures?.map(({ url, alt }) => ({
+        url,
+        alt: alt || null
+      })),
       image: mainPicture||null,
+      imageAlt: mainPictureAlt || null,
       title: name||'',
       breadcrumbs: [
         { title: 'common:menu.projects', link: '/projects' },

@@ -7,7 +7,9 @@ export type NewsInfo = {
   id: number
   slug: string
   image: string
+  imageAlt?: string | null
   date: string
+  publishedAt?: string | null
   link: string
   externalLink?: string
   title: string
@@ -115,6 +117,7 @@ export const mapFromBackendNews = ({
   slug,
   date,
   picture,
+  pictureAlt = null,
   tags,
   text,
   title,
@@ -136,12 +139,14 @@ export const mapFromBackendNews = ({
       id,
       slug,
       date: formattedDate,
+      publishedAt: date || null,
       title,
       link: `/news/${slug}`,
       externalLink: external_link || '',
       tags: tags || [],
       description: text,
       image: picture,
+      imageAlt: pictureAlt || null,
       bigPicture: big_picture,
       nextSlug: next_slug,
       prevSlug: prev_slug,

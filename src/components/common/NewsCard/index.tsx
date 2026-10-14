@@ -4,6 +4,7 @@ import cx from 'classnames'
 
 export type NewsCardProps = HTMLAttributes<HTMLAnchorElement> & {
   image: string
+  imageAlt?: string | null
   title: string
   date: string
   link: string
@@ -17,6 +18,7 @@ const defaultProps = {
 
 export const NewsCard: FC<NewsCardProps> = ({
   image,
+  imageAlt,
   title,
   date,
   link,
@@ -33,7 +35,7 @@ export const NewsCard: FC<NewsCardProps> = ({
       order={order}
     >
       <Picture>
-        <img className={newsImage()} src={image} alt={title} />
+        <img className={newsImage()} src={image} alt={imageAlt || title} loading="lazy" decoding="async" />
       </Picture>
       <Date>{date}</Date>
       <Title>{title}</Title>

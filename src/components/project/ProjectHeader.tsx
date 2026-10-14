@@ -1,6 +1,6 @@
 import { Col, Grid } from '@ui'
 import { Project } from '@utils/api/project'
-import React, { FC, RefObject, useEffect, useRef, useState } from 'react'
+import React, { FC, RefObject, useRef, useState } from 'react'
 import { css, styled } from 'stitches.config'
 import { default as SlickSlider } from 'react-slick'
 import { SliderPagination } from '@components/common/Slider/Pagination'
@@ -12,33 +12,34 @@ type ProjectHeaderProps = {
   anchorRef: RefObject<HTMLDivElement>
 }
 
-const ImageSlide = ({ src }: { src: string }) => {
-  const [loaded, setLoaded] = useState(false);
-
-  useEffect(() => {
-    const img = new Image();
-    img.src = src;
-    img.onload = () => setLoaded(true); 
-  }, [src]);
+const ImageSlide = ({
+  src,
+  alt,
+  priority = false
+}: {
+  src: string
+  alt: string
+  priority?: boolean
+}) => {
+  const [loaded, setLoaded] = useState(false)
 
   return (
     <Slide>
-      <BlurImage
-        style={{ backgroundImage: `url(${src}?w=50&blur=30)` }}
-        loaded={loaded}
-      />
-
       <MainImage
-        style={{ backgroundImage: `url(${src})` }}
-        loaded={loaded}
+        src={src}
+        alt={alt}
+        loaded={priority || loaded}
+        loading={priority ? 'eager' : 'lazy'}
+        decoding={priority ? 'auto' : 'async'}
+        onLoad={() => setLoaded(true)}
       />
     </Slide>
-  );
+  )
 };
 
 const Gallery: FC<{
   title: string
-  images: string[]
+  images: { url: string; alt?: string | null }[]
   anchorRef: RefObject<HTMLDivElement>
 }> = ({ title, images, anchorRef = { current: null } }) => {
   const sliderRef = useRef(null)
@@ -61,11 +62,14 @@ const Gallery: FC<{
       {images.length > 0 && (
         <SlickSlider 
           ref={(r) => (sliderRef.current = r)}
-          beforeChange={(_, n) => setCurrentSlide(n)} 
-          lazyLoad="progressive">
-        {images.map((picture) => (
-          <div key={picture}>
-            <ImageSlide src={picture} />
+          beforeChange={(_, n) => setCurrentSlide(n)}>
+        {images.map((picture, index) => (
+          <div key={`${picture.url}-${index}`}>
+            <ImageSlide
+              src={picture.url}
+              alt={picture.alt || title}
+              priority={index === 0}
+            />
           </div>
         ))}
       </SlickSlider>
@@ -136,17 +140,13 @@ const Gallery: FC<{
 }
 
 export const ProjectHeader: FC<ProjectHeaderProps> = ({
-  details: { gallery, image, title },
+  details: { gallery, image, imageAlt, title },
   anchorRef
 }) => {
   return (
     <Header>
-      {gallery.length == 0 && (
-        <Slide
-          style={{
-            backgroundImage: `url(${image})`
-          }}
-        />
+      {gallery.length == 0 && image && (
+        <ImageSlide src={image} alt={imageAlt || title} />
       )}
       <Gallery title={title} anchorRef={anchorRef} images={gallery} />
     </Header>
@@ -181,9 +181,7 @@ const Header = styled('div', {
 })
 
 const Slide = styled("div", {
-  backgroundPosition: "center center",
-  backgroundRepeat: "no-repeat",
-  backgroundSize: "cover",
+  backgroundColor: "#141416",
   width: "100vw",
   height: "calc(100vh + 1px)",
   maxHeight: 700,
@@ -203,29 +201,12 @@ const Slide = styled("div", {
   },
 });
 
-const BlurImage = styled("div", {
+const MainImage = styled("img", {
   position: "absolute",
   width: "100%",
   height: "100%",
-  backgroundSize: "cover",
-  backgroundPosition: "center",
-  filter: "blur(20px)",
-  transition: "opacity 0.4s ease-in-out",
-  opacity: 1,
-
-  variants: {
-    loaded: {
-      true: { opacity: 0 }, // Hide blur when image is loaded
-    },
-  },
-});
-
-const MainImage = styled("div", {
-  position: "absolute",
-  width: "100%",
-  height: "100%",
-  backgroundSize: "cover",
-  backgroundPosition: "center",
+  objectFit: "cover",
+  objectPosition: "center",
   transition: "opacity 0.6s ease-in-out",
   opacity: 0,
 

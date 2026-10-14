@@ -3,6 +3,8 @@ import React, { FC } from 'react'
 import { styled, css } from 'stitches.config'
 import useTranslation from 'next-translate/useTranslation'
 
+const toTelHref = (phone: string) => `tel:${phone.replace(/[^\d+]/g, '')}`
+
 export const PlatformsList: FC = () => {
   const { t } = useTranslation('platform')
   const { t:tcommon } = useTranslation('common')
@@ -53,7 +55,11 @@ export const PlatformsList: FC = () => {
                 </TextContainer>
                 <Footer>
                   <TextHeader>{tcommon('title.sales')}:</TextHeader>
-                  <TextPhone>{phone}</TextPhone>
+                  {phone ? (
+                    <TextPhone as="a" href={toTelHref(String(phone))}>
+                      {phone}
+                    </TextPhone>
+                  ) : null}
                 </Footer>
               </Body>
             </div>
@@ -265,9 +271,12 @@ const TextHeader = styled('p', {
 })
 
 const TextPhone = styled('h4', {
+  display: 'block',
   fontWeight: 400,
   fontSize: '24px',
-  lineHeight: '30px'
+  lineHeight: '30px',
+  color: 'inherit',
+  textDecoration: 'none'
 })
 
 const text = css({

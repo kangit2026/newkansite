@@ -54,11 +54,11 @@ export const Partnership: FC<{ list: any; css?: any }> = ({
         autoplay={true}
         autoplaySpeed={4000}
       >
-        {list.map(({ text, picture, link }) => (
+        {list.map(({ text, picture, link, alt }) => (
           <div key={text}>
             <Content>
               <PartnershipImage>
-                <img src={picture} alt={text} />
+                <img src={picture} alt={alt || text} loading="lazy" decoding="async" />
               </PartnershipImage>
               <div>
                 <Title>{text}</Title>

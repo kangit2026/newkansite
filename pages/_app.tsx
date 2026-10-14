@@ -27,6 +27,7 @@ import { usePersistLocale } from '@utils/hooks/use-persist-locale'
 import useTranslation from 'next-translate/useTranslation'
 import { setLanguageHeader } from '@utils/api'
 import { getSettings, defaultSettings } from '@utils/api/settings'
+import { buildJsonLd, jsonLdScript } from '@utils/jsonld'
 import { QueryClient, QueryClientProvider } from 'react-query'
 
 axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_URL
@@ -243,6 +244,19 @@ function App({ Component, pageProps, settings, siteOrigin }) {
   const enUrl = origin
     ? `${origin}${localizedPath(pagePath, 'en')}`
     : ''
+  const structuredData = canonical
+    ? jsonLdScript(
+        buildJsonLd({
+          origin,
+          locale: locale || SITE_DEFAULT_LOCALE,
+          pathname,
+          canonical,
+          settings,
+          details: pageProps?.details,
+          t
+        })
+      )
+    : ''
 
   return (
     <>
@@ -285,6 +299,12 @@ function App({ Component, pageProps, settings, siteOrigin }) {
           <meta property="og:description" content={seo.description} />
         )}
         {seo.ogImage && <meta property="og:image" content={seo.ogImage} />}
+        {structuredData && (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: structuredData }}
+          />
+        )}
       </Head>
       <QueryClientProvider client={queryClient}>
         <ThemeProvider

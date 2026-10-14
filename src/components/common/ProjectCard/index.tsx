@@ -3,6 +3,8 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { FC, HTMLAttributes, useState } from 'react'
 import { styled } from 'stitches.config'
+
+const toTelHref = (phone: string) => `tel:${phone.replace(/[^\d+]/g, '')}`
 // import  '../../../../public/projects/animated-hover.svg'
 
 const AnimatedHover = () => {
@@ -38,6 +40,7 @@ const AnimatedHover = () => {
 }
 export type ProjectCardProps = HTMLAttributes<HTMLDivElement> & {
   image: string
+  imageAlt?: string | null
   title: string
   phone?: string
   phoneLabel?: string | null
@@ -52,6 +55,7 @@ export type ProjectCardProps = HTMLAttributes<HTMLDivElement> & {
 
 export const ProjectCard: FC<ProjectCardProps> = ({
   image,
+  imageAlt,
   title,
   phone,
   phoneLabel,
@@ -131,11 +135,18 @@ export const ProjectCard: FC<ProjectCardProps> = ({
         }}
       >
         <Card
-          href={link}
           type={type}
           style={{ position: 'relative' }}
         >
-          <Background style={{ backgroundImage: `url(${image})` }} />
+          <CardLink href={link} aria-label={title} />
+          {image && (
+            <Background
+              src={image}
+              alt={imageAlt || title}
+              loading="lazy"
+              decoding="async"
+            />
+          )}
           <Content>
             <Title>{title}</Title>
             <Details>
@@ -149,7 +160,22 @@ export const ProjectCard: FC<ProjectCardProps> = ({
               {phone && (
                 <Info>
                   {phoneLabel && <InfoTitle>{phoneLabel}:</InfoTitle>}
-                  <InfoValue>{phone}</InfoValue>
+                  <InfoValue
+                    as="a"
+                    href={toTelHref(phone)}
+                    onClick={(event) => event.stopPropagation()}
+                    onMouseDown={(event) => event.stopPropagation()}
+                    css={{
+                      color: 'inherit',
+                      textDecoration: 'underline',
+                      textUnderlineOffset: '3px',
+                      pointerEvents: 'auto',
+                      position: 'relative',
+                      zIndex: 2
+                    }}
+                  >
+                    {phone}
+                  </InfoValue>
                 </Info>
               )}
             </Details>
@@ -302,17 +328,25 @@ const FoggyLeft = styled('div', {
       }
 })
 
-const Background = styled('div', {
+const Background = styled('img', {
   position: 'absolute',
   top: 0,
   right: 0,
   left: 0,
   bottom: 0,
-  backgroundSize: 'cover',
-  backgroundPosition: 'center 30%'
+  width: '100%',
+  height: '100%',
+  objectFit: 'cover',
+  objectPosition: 'center 30%'
 })
 
-const Card = styled('a', {
+const CardLink = styled('a', {
+  position: 'absolute',
+  inset: 0,
+  zIndex: 1
+})
+
+const Card = styled('div', {
   '&:focus': { outline: 'none' },
   outline: 'none',
   height: 540,

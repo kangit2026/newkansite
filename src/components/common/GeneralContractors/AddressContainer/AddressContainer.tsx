@@ -4,6 +4,7 @@ import { styled, css } from 'stitches.config'
 import useTranslation from 'next-translate/useTranslation'
 
 const phone = '044 495 85 16'
+const phoneHref = 'tel:+380444958516'
 const email = 'office@kanbud.com.ua'
 
 export const AddressContainer: FC = ({}) => {
@@ -14,7 +15,9 @@ export const AddressContainer: FC = ({}) => {
       <Grid className={undefined} >
         <Col className={undefined}  xs={{ span: 10, start: 2 }} lg={{ span: 3, start: 9 }}>
           <AddressWrapper>
-            <Contact className={emailContent()}>{phone}</Contact>
+            <Contact as="a" href={phoneHref} className={emailContent()}>
+              {phone}
+            </Contact>
             <Contact className={emailContent()}>{email}</Contact>
           </AddressWrapper>
         </Col>
@@ -52,6 +55,9 @@ const AddressWrapper = styled('div', {
   }
 })
 const Contact = styled('h4', {
+  display: 'block',
+  color: 'inherit',
+  textDecoration: 'none',
   fontWeight: 400,
   fontSize: '24px',
   lineHeight: '1.5em',
