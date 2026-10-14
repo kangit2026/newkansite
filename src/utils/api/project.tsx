@@ -12,6 +12,7 @@ export type Project = {
   link: string
   features: { title: string; value: string }[]
   phone: string
+  phoneLabel?: string | null
   fullArea: number
   video?: string
   projectOffice: string
@@ -34,12 +35,14 @@ export const mapFromFeaturedBackendProject = ({
   slug,
   name,
   phone,
+  phoneLabel,
   mainPicture
 }) => {
   try {
     return {
       id,
       phone,
+      phoneLabel: phoneLabel || null,
       title: name,
       image: mainPicture,
       link: `/project/${slug}`
@@ -67,6 +70,7 @@ export const mapFromBackendProject = ({
   video,
   name,
   phone,
+  phoneLabel,
   mainPicture,
   metaTitle,
   metaDescription
@@ -77,6 +81,7 @@ export const mapFromBackendProject = ({
       id:id||null,
       slug:slug||null,
       phone:phone||null,
+      phoneLabel: phoneLabel || null,
       fullArea:fullArea||null,
       video:video||null,
       projectOffice:projectOffice||null,

@@ -1,5 +1,4 @@
 import { keyframes } from '@stitches/react'
-import useTranslation from 'next-translate/useTranslation'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { FC, HTMLAttributes, useState } from 'react'
@@ -41,6 +40,7 @@ export type ProjectCardProps = HTMLAttributes<HTMLDivElement> & {
   image: string
   title: string
   phone?: string
+  phoneLabel?: string | null
   slideable: boolean
   onLeft: any
   onRight: any
@@ -54,6 +54,7 @@ export const ProjectCard: FC<ProjectCardProps> = ({
   image,
   title,
   phone,
+  phoneLabel,
   slideable = false,
   onLeft = () => {},
   onRight = () => {},
@@ -63,14 +64,8 @@ export const ProjectCard: FC<ProjectCardProps> = ({
   projectId,
   ...props
 }) => {
-  const { t } = useTranslation('platform')
-  const { t:tcommon } = useTranslation('common')
   const router = useRouter()
   const [clickCoords, setClickCoords] = useState([-1, -1])
-
-  const salesText = [30, 31, 32, 107].includes(projectId)
-    ? tcommon('title.sales')
-    : tcommon('title.rent_contact')
 
   return (
     <Wrapper
@@ -153,7 +148,7 @@ export const ProjectCard: FC<ProjectCardProps> = ({
                 ))}
               {phone && (
                 <Info>
-                  <InfoTitle>{salesText}:</InfoTitle>
+                  {phoneLabel && <InfoTitle>{phoneLabel}:</InfoTitle>}
                   <InfoValue>{phone}</InfoValue>
                 </Info>
               )}

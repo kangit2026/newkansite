@@ -15,7 +15,7 @@ export type ProjectsProps = HTMLAttributes<HTMLDivElement> & {
 
 export const Projects: FC<ProjectsProps> = ({ projects = [] }) => {
   const projectsList = projects.map(
-    ({ id, title, image, phone, features, link }) => (
+    ({ id, title, image, phone, phoneLabel, features, link }) => (
       <ProjectCard
         key={id}
         slideable={false}
@@ -24,6 +24,7 @@ export const Projects: FC<ProjectsProps> = ({ projects = [] }) => {
         image={image}
         title={title}
         phone={phone}
+        phoneLabel={phoneLabel}
         features={features}
         link={link}
         className={sliderCard()}

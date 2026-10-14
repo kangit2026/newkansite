@@ -58,8 +58,8 @@ export const About: FC<{
             }}
           />
           <TextContent>
-            <RichTextContent html={content?.history || t('history')} />
-            <RichTextContent html={content?.specialists || t('specialists')} />
+            <RichTextContent html={content?.history} />
+            <RichTextContent html={content?.specialists} />
           </TextContent>
         </Col>
       </Grid>

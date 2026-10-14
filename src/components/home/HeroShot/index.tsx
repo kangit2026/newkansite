@@ -4,8 +4,6 @@ import { ManifestVideo } from './ManifestVideo'
 import { Features } from './Features'
 import HoveredComponent from '@components/common/HoveredComponent'
 import { css, styled } from 'stitches.config'
-import useTranslation from 'next-translate/useTranslation'
-
 export type HeroShotProps = {
   motto?: string | null
   awardsTitle?: string | null
@@ -19,9 +17,6 @@ export const HeroShot: FC<HeroShotProps> = ({
   awards,
   videoUrl
 }) => {
-  const { t } = useTranslation('home')
-  const resolvedMotto = motto || t('motto')
-
   return (
     <Wrapper>
       <Grid className={undefined} >
@@ -36,15 +31,14 @@ export const HeroShot: FC<HeroShotProps> = ({
           <ManifestVideo src={videoUrl} />
           <Heading>
             KAN Development
-            <span className="d-none d-md-inline">
-              {' '}
-              / {resolvedMotto}
-            </span>
+            {motto ? (
+              <span className="d-none d-md-inline"> / {motto}</span>
+            ) : null}
           </Heading>
         </Col>
       </Grid>
       <Features
-        motto={resolvedMotto}
+        motto={motto}
         awardsTitle={awardsTitle}
         awards={awards}
       />

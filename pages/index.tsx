@@ -96,7 +96,7 @@ export default function Home({
         </Section>
       )}
       <Advertisement
-        title={commercialAd?.title || t('common:commercial_advertisement')}
+        title={commercialAd?.title || ''}
         className={advertisementCommercial()}
         link={commercialAd?.link || '/platform'}
         variant="dashed"

@@ -2,36 +2,23 @@ import React, { FC } from 'react'
 import { Col, Grid } from '@ui'
 import { css, styled } from 'stitches.config'
 import { AdaptiveImage } from '@components/common/AdaptiveImage'
-import useTranslation from 'next-translate/useTranslation'
 import type { MarketPageContent } from '@utils/api/market'
-
-const defaultPhone = '+38 (067) 579-98-63'
 
 type Props = {
   content?: MarketPageContent
 }
 
 const Market: FC<Props> = ({ content }) => {
-  const { t } = useTranslation('market')
-
-  const fallbackPros: string[] =
-    t('pros.items', null, {
-      returnObjects: true,
-      fallback: ''
-    }) || []
-
-  const pros =
-    content?.prosItems?.length > 0 ? content.prosItems : fallbackPros
-
-  const badge = content?.badge || t('new_service')
-  const title = content?.title || t('title')
-  const sellText = content?.sellText || t('sell')
-  const question = content?.question || t('question')
-  const answer = content?.answer || t('answer')
-  const contactLabel = content?.contactLabel || t('contact')
-  const prosTitle = content?.prosTitle || t('pros.title')
-  const trustText = content?.trustText || t('trust')
-  const phone = content?.phone || defaultPhone
+  const pros = (content?.prosItems || []).filter(Boolean)
+  const badge = content?.badge || ''
+  const title = content?.title || ''
+  const sellText = content?.sellText || ''
+  const question = content?.question || ''
+  const answer = content?.answer || ''
+  const contactLabel = content?.contactLabel || ''
+  const prosTitle = content?.prosTitle || ''
+  const trustText = content?.trustText || ''
+  const phone = content?.phone || ''
 
   return (
     <Wrapper>
@@ -87,7 +74,9 @@ const Market: FC<Props> = ({ content }) => {
                 fill="white"
               />
             </svg>
-            <span style={{ marginTop: 0 }}>{contactLabel}:</span>
+            {contactLabel ? (
+              <span style={{ marginTop: 0 }}>{contactLabel}:</span>
+            ) : null}
             <Number>{phone}</Number>
           </Contact>
         </Col>
@@ -99,7 +88,9 @@ const Market: FC<Props> = ({ content }) => {
               md={{ span: 7, start: 2 }}
               lg={{ span: 5, start: 2 }}
             >
-              <SemiTitle className={worth()}>{prosTitle}:</SemiTitle>
+              {prosTitle ? (
+                <SemiTitle className={worth()}>{prosTitle}:</SemiTitle>
+              ) : null}
             </Col>
             <Col
               className={undefined}

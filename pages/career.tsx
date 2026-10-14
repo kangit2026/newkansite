@@ -3,7 +3,6 @@ import { Col, Grid } from '@ui'
 import { styled, css } from 'stitches.config'
 import { SelectBox } from '@components/common/SelectBox'
 import { Pagination } from '@components/common/Pagination'
-import useTranslation from 'next-translate/useTranslation'
 import {
   getVacancies,
   getVacanciesCategories,
@@ -32,13 +31,10 @@ export default function Career({
   const [currentPage, setCurrentPage] = useState(0)
   const headingRef = useRef(null)
   const [canFetch, setCanFetch] = useState(false)
-  const { t } = useTranslation('career')
-
-  const heading = content?.heading || t('heading')
-  const cityLabel = content?.cityLabel || t('city')
-  const allCategoriesLabel =
-    content?.allCategoriesLabel || t('all_categories')
-  const introText = content?.introText || t('text')
+  const heading = content?.heading || ''
+  const cityLabel = content?.cityLabel || ''
+  const allCategoriesLabel = content?.allCategoriesLabel || ''
+  const introText = content?.introText || ''
 
   useEffect(() => {
     if (currentPage > 0) {
@@ -154,11 +150,15 @@ export default function Career({
             <RichTextContent html={introText} />
           </CareerText>
           <Table
-            items={vacancies}
+            className={vacanciesTable()}
+            items={(vacancies || []).map(({ id, title, link }) => ({
+              id,
+              title,
+              link
+            }))}
             external={true}
             options={{
-              title: { style: 'default' },
-              date: { style: 'description', optional: true }
+              title: { style: 'default' }
             }}
             loading={isFetching}
           />
@@ -194,6 +194,14 @@ export async function getServerSideProps(ctx) {
     }
   }
 }
+const vacanciesTable = css({
+  mt: 24,
+
+  '@lg': {
+    mt: 40
+  }
+})
+
 const CareerText = styled('div', {
   fontStyle: 'normal',
   fontWeight: 'normal',

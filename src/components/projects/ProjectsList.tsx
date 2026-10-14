@@ -115,7 +115,7 @@ const Content: FC<ContentProps> = ({ projects, type }) => {
       <ContentWrapper visible={type == ProjectItemTypes.Stack}>
         <StacksWrapper>
           {projects.map(
-            ({ id, title, image, phone, features, link }) => (
+            ({ id, title, image, phone, phoneLabel, features, link }) => (
               <ProjectCard
                 slideable={false}
                 onLeft={() => {}}
@@ -124,6 +124,7 @@ const Content: FC<ContentProps> = ({ projects, type }) => {
                 image={image}
                 title={title}
                 phone={phone}
+                phoneLabel={phoneLabel}
                 features={features}
                 link={link}
                 type="small"

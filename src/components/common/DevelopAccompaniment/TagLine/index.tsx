@@ -1,15 +1,14 @@
-import useTranslation from 'next-translate/useTranslation'
 import React, { FC } from 'react'
 import { styled } from 'stitches.config'
 
 export const TagLine: FC<{ text?: string | null }> = ({ text }) => {
-  const { t } = useTranslation('common')
+  if (!text) {
+    return null
+  }
 
   return (
     <Container>
-      <Text>
-        {text || t('achievements')}
-      </Text>
+      <Text>{text}</Text>
     </Container>
   )
 }

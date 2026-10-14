@@ -50,6 +50,18 @@ import {
 } from './styles'
 import type { InsideCommunityBlock } from '@utils/api/insideCommunity'
 
+const principleImages: Record<string, Parameters<typeof AdaptiveImage>[0]['srcSet']> = {
+  prostir: require('@assets/inside_community/prostir.png?srcset'),
+  '2': require('@assets/inside_community/2.png?srcset'),
+  '3': require('@assets/inside_community/3.png?srcset'),
+  '4': require('@assets/inside_community/4.png?srcset'),
+  '5': require('@assets/inside_community/5.png?srcset'),
+  '6': require('@assets/inside_community/6.png?srcset'),
+  '7': require('@assets/inside_community/7.png?srcset'),
+  '8b': require('@assets/inside_community/8b.png?srcset'),
+  '9': require('@assets/inside_community/9.png?srcset')
+}
+
 const PrincipleImage = ({
   block,
   className
@@ -71,11 +83,13 @@ const PrincipleImage = ({
   if (block.number) {
     const file =
       block.number === 1 ? 'prostir' : block.number === 8 ? '8b' : String(block.number)
+    const srcSet = principleImages[file]
+    if (!srcSet) return null
 
     return (
       <AdaptiveImage
         className={className || space()}
-        srcSet={require(`@assets/inside_community/${file}.png?srcset`)}
+        srcSet={srcSet}
         themed={false}
       />
     )
@@ -103,7 +117,7 @@ export const BlockRenderer = ({
     const layout = block.layout || 'full_flip'
     const isCompact = layout.startsWith('compact')
     const layoutClass = [
-      layout === 'full_flip_first' && `${flip()} ${firstImage()}`,
+      layout === 'full_flip_first' && flip(),
       layout === 'full_flip' && `${flip()} ${magic()}`,
       layout === 'full_magic2' && magic2(),
       layout === 'full_magic_offset' && `${flip()} ${magic()} ${ml()} ${magic_3()}`,
@@ -113,10 +127,23 @@ export const BlockRenderer = ({
     ]
       .filter(Boolean)
       .join(' ')
+    const trailingBreaks =
+      isCompact ||
+      layout === 'full_magic_offset' ||
+      layout === 'full_magic_t'
+        ? 3
+        : layout === 'full_flip_first'
+          ? 2
+          : 0
 
     return (
       <ChangeFlex className={layoutClass}>
-        <PrincipleImage block={block} />
+        <PrincipleImage
+          block={block}
+          className={[space(), layout === 'full_flip_first' ? firstImage() : '']
+            .filter(Boolean)
+            .join(' ')}
+        />
         <Block>
           <SimpleTextTitle
             className={`${margined()} ${!isCompact ? subNumber() : ''} ${isCompact ? subsmallTitle() : ''}`}
@@ -130,19 +157,9 @@ export const BlockRenderer = ({
           </SimpleTextTitle>
           <SimpleText className={isCompact ? subsmall() : ''}>
             {block.description}
-            {!isCompact && (
-              <>
-                <br />
-                <br />
-              </>
-            )}
-            {isCompact && (
-              <>
-                <br />
-                <br />
-                <br />
-              </>
-            )}
+            {Array.from({ length: trailingBreaks }, (_, index) => (
+              <br key={index} />
+            ))}
           </SimpleText>
         </Block>
       </ChangeFlex>
@@ -156,10 +173,7 @@ export const BlockRenderer = ({
       <Bordered
         style={{
           marginTop: 24,
-          borderColor,
-          ...(layout === 'default' && block.statValue === '80%'
-            ? { marginBottom: 136 }
-            : {})
+          borderColor
         }}
         className={[
           layout === 'default' && block.statValue === '80%' ? withMargin() : '',
@@ -171,16 +185,19 @@ export const BlockRenderer = ({
         <Flex>
           {block.statValue && (
             <Percent
-              className={
-                layout === 'default' && block.statValue === '80%' ? cropped() : ''
-              }
               style={layout === 'special' ? { whiteSpace: 'pre' } : undefined}
             >
               {block.statValue}
             </Percent>
           )}
           {block.statLabel && (
-            <PercentDescription>{block.statLabel}</PercentDescription>
+            <PercentDescription
+              className={
+                layout === 'default' && block.statValue === '80%' ? cropped() : ''
+              }
+            >
+              {block.statLabel}
+            </PercentDescription>
           )}
         </Flex>
       </Bordered>

@@ -3,8 +3,6 @@ import { Section } from '@components/home/Section'
 import { MeritList } from './MeritList/MeritList'
 import { css, styled } from 'stitches.config'
 import { Grid, Col } from '@ui'
-import useTranslation from 'next-translate/useTranslation'
-
 export type ContainerProps = {
   container?: string
   title?: string | null
@@ -12,23 +10,18 @@ export type ContainerProps = {
   list?: string[]
 }
 
-const merits = ['first', 'second', 'third', 'fourth']
-
 export const MeritSection: FC<ContainerProps> = ({
   container,
   title,
   description,
   list
 }) => {
-  const { t } = useTranslation('about')
-
-  const resolvedList =
-    list && list.length > 0 ? list : merits.map((m) => t(`merit.list.${m}`))
+  const resolvedList = (list || []).filter(Boolean)
 
   return (
     <>
       <Section
-        title={title || t('merit.title')}
+        title={title || ''}
         className={section()}
         buttonTitle={''}
         titleClassName={''}
@@ -40,7 +33,7 @@ export const MeritSection: FC<ContainerProps> = ({
             lg={{ span: 10, start: 2 }}
           >
             <Container className={container}>
-              <MeritText>{description || t('merit.description')}:</MeritText>
+              {description ? <MeritText>{description}:</MeritText> : null}
               <MeritList merits={resolvedList} />
             </Container>
           </Col>

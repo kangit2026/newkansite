@@ -31,6 +31,48 @@ import { QueryClient, QueryClientProvider } from 'react-query'
 
 axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_URL
 
+const SITE_LOCALES = ['uk', 'en']
+const SITE_DEFAULT_LOCALE = 'uk'
+
+function headerValue(value?: string | string[]) {
+  if (!value) return ''
+  const raw = Array.isArray(value) ? value[0] : value
+  return raw.split(',')[0].trim()
+}
+
+function resolveSiteOrigin(req?: {
+  headers: { [key: string]: string | string[] | undefined }
+}) {
+  if (!req) {
+    if (typeof window === 'undefined') return ''
+    const url = new URL(window.location.href)
+    url.hostname = url.hostname.replace(/^www\./i, '')
+    return url.origin
+  }
+
+  const proto = headerValue(req.headers['x-forwarded-proto']) || 'https'
+  const host = headerValue(
+    req.headers['x-forwarded-host'] || req.headers.host
+  ).replace(/^www\./i, '')
+
+  if (!host) return ''
+  return `${proto}://${host}`
+}
+
+function pathWithoutQuery(asPath: string) {
+  const clean = (asPath || '/').split('?')[0].split('#')[0] || '/'
+  return clean.startsWith('/') ? clean : `/${clean}`
+}
+
+function localizedPath(path: string, locale: string) {
+  const normalized = path || '/'
+  if (!SITE_LOCALES.includes(locale) || locale === SITE_DEFAULT_LOCALE) {
+    return normalized
+  }
+  if (normalized === '/') return `/${locale}`
+  return `/${locale}${normalized}`
+}
+
 const ThemeAutoSwitcher = ({ children }) => {
   const { setTheme } = useTheme()
 
@@ -133,7 +175,7 @@ const queryClient = new QueryClient({
   }
 })
 
-function App({ Component, pageProps, settings }) {
+function App({ Component, pageProps, settings, siteOrigin }) {
   globalStyles()
   const { asPath, pathname } = useRouter()
   const [isMenuOpened, setIsMenuOpened] = useState(false)
@@ -190,6 +232,17 @@ function App({ Component, pageProps, settings }) {
   // через pageProps.seo, а не через власний <Head><title>.
   const seo = pageProps?.seo || {}
   const title = seo.title || defaultTitle
+  const pagePath = pathWithoutQuery(asPath)
+  const origin = siteOrigin || ''
+  const canonical = origin
+    ? `${origin}${localizedPath(pagePath, locale || SITE_DEFAULT_LOCALE)}`
+    : ''
+  const ukUrl = origin
+    ? `${origin}${localizedPath(pagePath, 'uk')}`
+    : ''
+  const enUrl = origin
+    ? `${origin}${localizedPath(pagePath, 'en')}`
+    : ''
 
   return (
     <>
@@ -197,6 +250,33 @@ function App({ Component, pageProps, settings }) {
         <meta name="theme-color" content="#ffffff" />
         <meta name="viewport" content="width=device-width" />
         <title>{title}</title>
+        {canonical && (
+          <link rel="canonical" href={canonical} key="canonical" />
+        )}
+        {ukUrl && (
+          <link
+            rel="alternate"
+            hrefLang="uk"
+            href={ukUrl}
+            key="hreflang-uk"
+          />
+        )}
+        {enUrl && (
+          <link
+            rel="alternate"
+            hrefLang="en"
+            href={enUrl}
+            key="hreflang-en"
+          />
+        )}
+        {ukUrl && (
+          <link
+            rel="alternate"
+            hrefLang="x-default"
+            href={ukUrl}
+            key="hreflang-x-default"
+          />
+        )}
         {seo.description && (
           <meta name="description" content={seo.description} />
         )}
@@ -254,7 +334,11 @@ App.getInitialProps = async (appContext) => {
     () => defaultSettings
   )
 
-  return { ...appProps, settings }
+  return {
+    ...appProps,
+    settings,
+    siteOrigin: resolveSiteOrigin(appContext.ctx.req)
+  }
 }
 
 export default App

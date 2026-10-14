@@ -5,7 +5,6 @@ import { FooterIcons } from './FooterIcons/FooterIcons'
 import { RenewalContent } from './RenewalContent/RenewalContent'
 import { ListContent } from './ListContent/ListContent'
 import { css, styled } from 'stitches.config'
-import useTranslation from 'next-translate/useTranslation'
 import { Advertisement } from '@components/home/Advertisement'
 import { useRouter } from 'next/router'
 import TelegramIcon from '@assets/social/telegram.svg?svgr'
@@ -17,21 +16,20 @@ export type FooterProps = HTMLAttributes<HTMLDivElement> & {
 
 export const Footer: FC<FooterProps> = ({ settings, ...props }) => {
   const router = useRouter()
-  const { t } = useTranslation('common')
   const s = settings || defaultSettings
 
   return (
     <>
       {router.pathname == '/areas' ? (
         <Advertisement
-          title={s.commercialAd.title || t('commercial_advertisement')}
+          title={s.commercialAd.title || ''}
           className={advertisementProject()}
           link={s.commercialAd.link || '/platform'}
           variant="solid"
         />
       ) : (
         <Advertisement
-          title={s.projectAd.title || t('project_advertisement')}
+          title={s.projectAd.title || ''}
           className={advertisementProject()}
           link={s.projectAd.link || '/areas'}
           variant="solid"

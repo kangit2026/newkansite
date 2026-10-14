@@ -3,7 +3,6 @@ import Arrow from '@assets/home/arrow.svg?svgr'
 import { css } from 'stitches.config'
 import { styled } from 'stitches.config'
 import { Col, Grid } from '@ui'
-import useTranslation from 'next-translate/useTranslation'
 import { scrollToElement } from '@utils/helpers/animations'
 
 export const TitleContent: FC<{
@@ -11,16 +10,14 @@ export const TitleContent: FC<{
   motto?: string | null
   heading?: string | null
 }> = ({ anchorRef, motto, heading }) => {
-  const { t } = useTranslation('about')
-
   return (
     <Grid className={grid()}>
       <Col
         xs={12}
         className="d-md-flex flex-md-column justify-content-md-center align-items-md-center"
       >
-        <HeaderText>{motto || t('motto')}</HeaderText>
-        <TitleText>{heading || t('about')}</TitleText>
+        <HeaderText>{motto}</HeaderText>
+        <TitleText>{heading}</TitleText>
         <Arrow
           className={arrowDow()}
           onClick={() => scrollToElement(anchorRef.current)}

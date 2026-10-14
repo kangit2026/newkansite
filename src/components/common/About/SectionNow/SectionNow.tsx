@@ -2,19 +2,16 @@ import React, { FC } from 'react'
 import { Section } from '@components/home/Section'
 import { css, styled } from 'stitches.config'
 import { Col, Grid } from '@ui'
-import useTranslation from 'next-translate/useTranslation'
 import { RichTextContent } from '@components/common/RichTextContent'
 
 export const SectionNow: FC<{
   title?: string | null
   description?: string | null
 }> = ({ title, description }) => {
-  const { t } = useTranslation('about')
-
   return (
     <>
       <Section
-        title={title || t('today.title')}
+        title={title || ''}
         buttonTitle={''}
         className={textSection()}
       >
@@ -25,7 +22,7 @@ export const SectionNow: FC<{
             lg={{ span: 10, start: 2 }}
           >
             <TextSection>
-              <RichTextContent html={description || t('today.description')} />
+              <RichTextContent html={description} />
             </TextSection>
           </Col>
         </Grid>

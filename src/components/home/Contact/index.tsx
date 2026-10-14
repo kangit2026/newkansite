@@ -1,7 +1,6 @@
 import React, { FC, HTMLAttributes } from 'react'
 import { css, styled } from 'stitches.config'
 import { Formik } from 'formik'
-import useTranslation from 'next-translate/useTranslation'
 import { useMutation } from 'react-query'
 import { contact } from '@utils/api/contact'
 import { Spinner } from '@components/Spinner'
@@ -22,7 +21,6 @@ export const Contact: FC<ContactProps> = ({
   component,
   content
 }: ContactProps) => {
-  const { t } = useTranslation('contacts')
   const router = useRouter()
   const {
     mutateAsync,
@@ -36,21 +34,21 @@ export const Contact: FC<ContactProps> = ({
     {
       type: 'name',
       name: 'name',
-      placeholder: content?.nameLabel || t('name')
+      placeholder: content?.nameLabel || ''
     },
     {
       type: 'phone',
       name: 'phone',
-      placeholder: content?.phoneLabel || t('phone')
+      placeholder: content?.phoneLabel || ''
     },
     {
       type: 'email',
       name: 'email',
-      placeholder: content?.emailLabel || t('email')
+      placeholder: content?.emailLabel || ''
     },
     {
       name: 'message',
-      placeholder: content?.messageLabel || t('message'),
+      placeholder: content?.messageLabel || '',
       component: Message,
       as: 'textarea'
     }
@@ -60,7 +58,7 @@ export const Contact: FC<ContactProps> = ({
     <Outer>
       {component}
       <Wrapper>
-        <Title>{content?.heading || t('heading')}</Title>
+        <Title>{content?.heading}</Title>
         <Formik
           initialValues={{
             name: '',
@@ -136,7 +134,7 @@ export const Contact: FC<ContactProps> = ({
           }) => (
             <FormWrapper>
               <SuccessMessage visible={isSuccess}>
-                <SuccessText>{content?.successMessage || t('success')}</SuccessText>
+                <SuccessText>{content?.successMessage}</SuccessText>
                 <Submit
                   css={{ mt: 70, '@lg': { mb: 50 } }}
                   type="button"
@@ -145,7 +143,7 @@ export const Contact: FC<ContactProps> = ({
                     resetForm()
                   }}
                 >
-                  {content?.sendAgainLabel || t('send_again')}
+                  {content?.sendAgainLabel}
                 </Submit>
               </SuccessMessage>
 
@@ -185,13 +183,13 @@ export const Contact: FC<ContactProps> = ({
                   <ErrorMessage
                     css={{ pb: 25 }}
                     isVisible={isError}
-                    text={content?.errorMessage || t('error')}
+                    text={content?.errorMessage || ''}
                   />
                   <Submit type="submit">
                     {isLoading && (
                       <Spinner css={{ m: '0 13px -4px 0' }} />
                     )}
-                    {content?.sendLabel || t('send')}
+                    {content?.sendLabel}
                   </Submit>
                 </div>
               </Form>

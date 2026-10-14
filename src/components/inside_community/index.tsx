@@ -1,7 +1,6 @@
 import { AdaptiveImage, ThemingMode } from '@components/common/AdaptiveImage'
 import { useTheme } from 'next-themes'
 import Image from 'next/image'
-import useTranslation from 'next-translate/useTranslation'
 import { usePersistLocale } from '@utils/hooks/use-persist-locale'
 import type { InsideCommunityContent } from '@utils/api/insideCommunity'
 import { renderBlocks } from './BlockRenderer'
@@ -33,18 +32,14 @@ type Props = {
 }
 
 export const InsideCommunity = ({ content }: Props) => {
-  const { t } = useTranslation('inside')
   const locale = usePersistLocale()
   const { resolvedTheme } = useTheme()
 
-  const heroTitle = content?.hero?.title || t('2')
-  const heroSubtitle = content?.hero?.subtitle || t('3')
-  const paragraphs =
-    content?.hero?.paragraphs?.length > 0
-      ? content.hero.paragraphs
-      : [t('4'), t('5'), t('6')]
-  const philosophyTitle = content?.philosophy?.title || t('7')
-  const philosophySubtitle = content?.philosophy?.subtitle || t('8')
+  const heroTitle = content?.hero?.title || ''
+  const heroSubtitle = content?.hero?.subtitle || ''
+  const paragraphs = (content?.hero?.paragraphs || []).filter(Boolean)
+  const philosophyTitle = content?.philosophy?.title || ''
+  const philosophySubtitle = content?.philosophy?.subtitle || ''
 
   const heroVideo = content?.hero?.video || '/inside_community/kan_inside.mp4'
   const heroImage =
@@ -73,7 +68,11 @@ export const InsideCommunity = ({ content }: Props) => {
         ) : (
           <AdaptiveImage
             className={community()}
-            srcSet={require(`@assets/inside_community/community.${locale === 'uk' ? 'png' : 'svg'}?srcset`)}
+            srcSet={
+              locale === 'uk'
+                ? require('@assets/inside_community/community.png?srcset')
+                : require('@assets/inside_community/community.svg?srcset')
+            }
             themed={false}
           />
         )}

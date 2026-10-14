@@ -4,13 +4,13 @@ import Arrow from '@assets/home/arrow.svg?svgr'
 import { numberWithSpaces } from '@utils/helpers'
 import { css, styled } from 'stitches.config'
 import { useTheme } from 'next-themes'
-import useTranslation from 'next-translate/useTranslation'
 import { ScrollAnchor } from '@components/common/ScrollAnchor'
 import { scrollToElement } from '@utils/helpers/animations'
 
-const awardKeys = ['first', 'second', 'third', 'fourth']
-
-const Award: FC<{ amount: number | string; description: string }> = ({
+const Award: FC<{
+  amount: number | string | null
+  description: string | null
+}> = ({
   amount,
   description
 }) => {
@@ -38,19 +38,12 @@ export const Features: FC<FeaturesProps> = ({
   awardsTitle,
   awards
 }) => {
-  const { t } = useTranslation('home')
   const { resolvedTheme } = useTheme()
   const anchorRef = useRef(null)
 
-  const resolvedMotto = motto || t('motto')
-  const resolvedAwardsTitle = awardsTitle || t('awards.title')
-  const resolvedAwards =
-    awards && awards.length > 0
-      ? awards
-      : awardKeys.map((key) => ({
-          value: t(`awards.${key}.value`),
-          description: t(`awards.${key}.description`)
-        }))
+  const resolvedMotto = motto || ''
+  const resolvedAwardsTitle = awardsTitle || ''
+  const resolvedAwards = awards || []
 
   return (
     <Wrapper>

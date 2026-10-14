@@ -402,6 +402,7 @@ marginBottom:8,
 export const Medium = styled('div', {
   fontSize:16,
   color:'$accent',
+  whiteSpace: 'pre-line',
 
 '@md':{
 width:'50%'
