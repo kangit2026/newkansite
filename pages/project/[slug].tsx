@@ -1,4 +1,5 @@
 import React from 'react'
+import useTranslation from 'next-translate/useTranslation'
 import { Project } from '@components/project'
 import { Error } from '@components/common/Error'
 import { getProject } from '@utils/api/project'
@@ -9,6 +10,8 @@ import isEmpty from 'lodash-es/isEmpty'
 import { getFeaturedProjects } from '@utils/api/projects'
 
 export default function ProjectPage({ details, projects }) {
+  const { t } = useTranslation('project')
+
   if (isEmpty(details)) return <Error code={404} />
 
   return (
@@ -16,8 +19,8 @@ export default function ProjectPage({ details, projects }) {
       <Project details={details} />
       {projects.length > 0 && (
         <Section
-          title="Проєкти"
-          buttonTitle="Дивитися усі проєкти"
+          title={t('related_title')}
+          buttonTitle={t('related_button')}
           buttonLink="/projects"
           className={projectsSection()}
         >
@@ -51,7 +54,7 @@ export async function getServerSideProps(ctx) {
       seo: {
         title:
           details?.metaTitle ||
-          (details?.title ? `KAN | ${details.title}` : null),
+          details?.title || null,
         description: details?.metaDescription || null,
         ogImage: details?.image || null
       }

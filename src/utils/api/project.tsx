@@ -1,7 +1,6 @@
 import { get } from '.'
 import getValue from 'lodash-es/get'
 import isEmpty from 'lodash-es/isEmpty'
-import axios from 'axios'
 export type BreadCrumb = { title: string; link?: string }
 
 export type Project = {
@@ -155,12 +154,11 @@ export const getProject = ({
     .catch((_) => ({ details: {} }))
 }
 
-export const getPartnership = async () => {
-  const data = await axios({
-    method: 'get',
-    url: '/Partnership'
-  }).then((resp) => {
-    return resp.data.value
+export const getPartnership = async (ctx = {}) => {
+  return get({
+    url: '/Partnership',
+    ctx
   })
-  return data
+    .then(({ data }) => data?.value || [])
+    .catch(() => [])
 }

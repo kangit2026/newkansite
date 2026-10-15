@@ -299,6 +299,9 @@ function App({ Component, pageProps, settings, siteOrigin }) {
           <meta property="og:description" content={seo.description} />
         )}
         {seo.ogImage && <meta property="og:image" content={seo.ogImage} />}
+        {seo.noindex && (
+          <meta name="robots" content="noindex, follow" />
+        )}
         {structuredData && (
           <script
             type="application/ld+json"

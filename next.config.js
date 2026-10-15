@@ -38,7 +38,7 @@ const nextConfig = {
   images: {
     deviceSizes,
     disableStaticImages: true,
-    domains: ['kan.bananza.agency', 'newkansite.pp.ua', 'www.newkansite.pp.ua']
+    domains: ['kan.bananza.agency', 'kandevelopment.com', 'www.kandevelopment.com']
   },
   webpack(config) {
     config.module.rules.push({
@@ -123,6 +123,12 @@ const nextConfig = {
   },
   env: {
     HERE_API_KEY: 'kasmyaVj8xCJ2n8VsVjGidGgPTTUuCv4VGBIx2kNKqE'
+  },
+  async rewrites() {
+    return [
+      { source: '/sitemap.xml', destination: '/api/sitemap' },
+      { source: '/llms.txt', destination: '/api/llms' }
+    ]
   }
 }
 

@@ -34,9 +34,10 @@ export async function getServerSideProps(ctx) {
       seo: {
         title:
           details?.metaTitle ||
-          (details?.title ? `KAN | ${details.title}` : null),
+          details?.title || null,
         description: details?.metaDescription || null,
-        ogImage: details?.image || null
+        ogImage: details?.image || null,
+        noindex: true
       }
     }
   }

@@ -31,8 +31,13 @@
     "more_button": "View all"
   },
   "footer": {
+    "chatbot": "Chatbot for quick contact:",
     "subscribe": "Subscribe to our updates",
+    "subscribe_success": "You have successfully subscribed to updates!",
+    "subscribe_error": "Something went wrong, please try subscribing later",
     "input": "Enter your e-mail",
+    "send": "Send",
+    "send_again": "Send again",
     "copyright": "All right reserved «KAN DEVELOPMENT» LLC",
     "links": {
       "home": "Main",

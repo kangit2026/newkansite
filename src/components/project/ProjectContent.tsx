@@ -198,16 +198,18 @@ export const ProjectContent = forwardRef<
               {features.map(
                 ({ id, title, value }) =>
                   value && (
-                    <Field key={id}>
-                      {title}:{' '}
-                      {id === 'phone' ? (
+                    id === 'phone' ? (
+                      <PhoneField key={id}>
+                        {title}:{' '}
                         <PhoneLink href={toTelHref(String(value))}>
                           {value}
                         </PhoneLink>
-                      ) : (
-                        <Value>{value}</Value>
-                      )}
-                    </Field>
+                      </PhoneField>
+                    ) : (
+                      <Field key={id}>
+                        {title}: <Value>{value}</Value>
+                      </Field>
+                    )
                   )
               )}
               <Link href="/contacts" passHref>
@@ -404,6 +406,14 @@ const Location = styled('div', {
 
 const Field = styled('div', {})
 
+const PhoneField = styled('h2', {
+  margin: 0,
+  fontSize: 'inherit',
+  fontWeight: 'inherit',
+  lineHeight: 'inherit',
+  letterSpacing: 'inherit'
+})
+
 const Infrastructure = styled('div', {
   mt: 43,
   letterSpacing: '0.005em',
@@ -419,7 +429,12 @@ const Infrastructure = styled('div', {
   }
 })
 
-const InfrastructureTitle = styled('div', {
+const InfrastructureTitle = styled('h2', {
+  margin: 0,
+  fontSize: 'inherit',
+  fontWeight: 'inherit',
+  lineHeight: 'inherit',
+  letterSpacing: 'inherit',
   cursor: 'pointer',
 
   '@md': {

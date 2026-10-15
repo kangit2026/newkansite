@@ -2,6 +2,7 @@ import { Col, Grid } from '@ui'
 import { ArrowLink } from '@components/common/ArrowLink'
 import { NewsInfo } from '@utils/api/news'
 import React, { FC } from 'react'
+import Link from 'next/link'
 import { styled, css } from 'stitches.config'
 import { ContentNews } from '../Content/ContentNews'
 
@@ -37,28 +38,38 @@ export const HeaderNewsItem: FC<{ details: NewsInfo }> = ({
         </Col>
         <Col className={undefined}  xs={{ span: 10, start: 2 }} md={{ span: 8, start: 3 }}>
           {prevHref && (
-            <ArrowLink
-              href={prevHref}
-              className={`${arrowLeft({
-                tablet: true
-              })} d-none d-md-flex`}
-            />
+            <Link href={prevHref} passHref>
+              <ArrowLink
+                className={`${arrowLeft({
+                  tablet: true
+                })} d-none d-md-flex`}
+              />
+            </Link>
           )}
           <TextHeader>{title}</TextHeader>
           {nextHref && (
-            <ArrowLink
-              href={nextHref}
-              className={`${arrowRight({
-                tablet: true
-              })} d-none d-md-flex`}
-            />
+            <Link href={nextHref} passHref>
+              <ArrowLink
+                className={`${arrowRight({
+                  tablet: true
+                })} d-none d-md-flex`}
+              />
+            </Link>
           )}
         </Col>
         <Col   xs={{ span: 1, start: 10 }} className="d-md-none">
-          {prevHref && <ArrowLink href={prevHref} className={arrowLeft()} />}
+          {prevHref && (
+            <Link href={prevHref} passHref>
+              <ArrowLink className={arrowLeft()} />
+            </Link>
+          )}
         </Col>
         <Col   xs={{ span: 1, start: 11 }} className="d-md-none">
-          {nextHref && <ArrowLink href={nextHref} className={arrowRight()} />}
+          {nextHref && (
+            <Link href={nextHref} passHref>
+              <ArrowLink className={arrowRight()} />
+            </Link>
+          )}
         </Col>
         <ContentNews
           title={title}

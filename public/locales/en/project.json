@@ -7,5 +7,7 @@
   "request": "Leave a request",
   "infrastructure": "Own infrastructure of the complex",
   "video": "Video presentation",
-  "webpage": "Webpage"
+  "webpage": "Webpage",
+  "related_title": "Projects",
+  "related_button": "View all projects"
 }

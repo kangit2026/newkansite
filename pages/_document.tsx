@@ -8,8 +8,6 @@ class MyDocument extends Document {
     return (
       <Html>
         <Head>
-          {/* сайт ще в розробці — знімемо, коли будемо готові до індексації */}
-          <meta name="robots" content="noindex, nofollow" />
           <link rel="icon" href="/favicon.ico" />
           <link
             rel="apple-touch-icon"
@@ -108,6 +106,11 @@ class MyDocument extends Document {
               gtag('config', 'UA-18059136-1');`
             }}
           ></script>
+          <script
+            src="https://analytics.ahrefs.com/analytics.js"
+            data-key="h1s/JJVcypsrkUPumYWrMw"
+            async
+          />
           {process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY && (
             <script
               src={`https://www.google.com/recaptcha/api.js?render=${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}`}

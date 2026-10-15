@@ -7,6 +7,7 @@ import { ListContent } from './ListContent/ListContent'
 import { css, styled } from 'stitches.config'
 import { Advertisement } from '@components/home/Advertisement'
 import { useRouter } from 'next/router'
+import useTranslation from 'next-translate/useTranslation'
 import TelegramIcon from '@assets/social/telegram.svg?svgr'
 import { SiteSettings, defaultSettings } from '@utils/api/settings'
 
@@ -16,6 +17,7 @@ export type FooterProps = HTMLAttributes<HTMLDivElement> & {
 
 export const Footer: FC<FooterProps> = ({ settings, ...props }) => {
   const router = useRouter()
+  const { t } = useTranslation('common')
   const s = settings || defaultSettings
 
   return (
@@ -38,7 +40,7 @@ export const Footer: FC<FooterProps> = ({ settings, ...props }) => {
       <Grid className={props?.className||undefined} {...props}>
         <Col className={undefined}  xs={{ span: 10, start: 2 }}>
           <TextChatbot>
-            Чат-бот для швидкого звʼязку: <ChatbotButton onClick={() => s.telegramChatLink && window.open(s.telegramChatLink, '_blank')}>
+            {t('footer.chatbot')} <ChatbotButton onClick={() => s.telegramChatLink && window.open(s.telegramChatLink, '_blank')}>
               <IconWrapper>
                 <TelegramIcon />
               </IconWrapper>

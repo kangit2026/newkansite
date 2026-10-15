@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { Col, Grid } from '@ui'
 import { HeroShot } from '@components/home/HeroShot'
 import { RecommendedProjects } from '@components/projects'
@@ -20,30 +20,19 @@ import {
 import { getPartnership } from '@utils/api/project'
 import { getSettings, SiteSettings } from '@utils/api/settings'
 
-const parsePartnerships = async () => {
-  const data = await getPartnership()
-  return data
-}
-
 export default function Home({
   news,
   projects,
   home,
-  commercialAd
+  commercialAd,
+  partnerships
 }: {
   news: any
   projects: any
   home?: SiteSettings['home']
   commercialAd?: SiteSettings['commercialAd']
+  partnerships: PartnershipType[]
 }) {
-  const [partnerships, setPartnerships] = useState([])
-
-  useEffect(() => {
-    parsePartnerships().then((data) => {
-      setPartnerships(data)
-    })
-  }, [])
-
   const { t } = useTranslation('home')
   const sliderRef = useRef(null)
   const [currentSlide, setCurrentSlide] = useState(0)
@@ -137,16 +126,18 @@ export default function Home({
 }
 
 export async function getServerSideProps(ctx) {
-  const [news, projects, settings] = await Promise.all([
+  const [news, projects, settings, partnerships] = await Promise.all([
     getNews({ ctx }),
     getFeaturedProjects(ctx),
-    getSettings({ ctx })
+    getSettings({ ctx }),
+    getPartnership(ctx)
   ])
 
   return {
     props: {
       news: news?.data,
       projects,
+      partnerships: partnerships || [],
       home: settings?.home || null,
       commercialAd: settings?.commercialAd || null,
       seo: {
