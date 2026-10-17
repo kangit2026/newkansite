@@ -122,7 +122,7 @@ const ThemeAutoSwitcher = ({ children }) => {
     }
   }, [])
 
-  // Раніше тут був гейт `{render && children}`, де render ставав true лише
+  // test Раніше тут був гейт `{render && children}`, де render ставав true лише
   // після client-side useEffect — тобто на сервері (і для будь-якого
   // безJS-клієнта: AI-краулери, curl тощо) весь вміст сайту не рендерився
   // ВЗАГАЛІ. next-themes вже сам вставляє inline-скрипт у <head>, який
