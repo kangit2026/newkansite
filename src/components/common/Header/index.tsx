@@ -1,6 +1,6 @@
 import { Col, Grid } from '@ui'
 import React, { FC, Fragment } from 'react'
-import Image from 'next/image'
+import Image from 'next/legacy/image'
 import { NavButton } from '@components/common/NavButton'
 import { NavBlock } from '@components/common/NavBlock'
 import { css, styled } from 'stitches.config'

@@ -61,7 +61,9 @@ const Gallery: FC<{
     <>
       {images.length > 0 && (
         <SlickSlider 
-          ref={(r) => (sliderRef.current = r)}
+          ref={(r) => {
+            sliderRef.current = r
+          }}
           beforeChange={(_, n) => setCurrentSlide(n)}>
         {images.map((picture, index) => (
           <div key={`${picture.url}-${index}`}>

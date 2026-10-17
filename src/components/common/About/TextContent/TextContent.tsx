@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import { styled } from 'stitches.config'
 
-export const TextContent: FC = ({ children }) => {
+export const TextContent: FC<{ children?: React.ReactNode }> = ({ children }) => {
   return <ParagraphText>{children}</ParagraphText>
 }
 

@@ -1,5 +1,4 @@
-const withPlugins = require('next-compose-plugins')
-const nextTranslate = require('next-translate')
+const nextTranslate = require('next-translate-plugin')
 const gridConfig = require('./config/grid')
 const path = require('path')
 const SpriteLoaderPlugin = require('svg-sprite-loader/plugin')
@@ -38,7 +37,14 @@ const nextConfig = {
   images: {
     deviceSizes,
     disableStaticImages: true,
-    domains: ['kan.bananza.agency', 'kandevelopment.com', 'www.kandevelopment.com']
+    remotePatterns: [
+      { protocol: 'https', hostname: 'kan.bananza.agency' },
+      { protocol: 'https', hostname: 'kandevelopment.com' },
+      { protocol: 'https', hostname: 'www.kandevelopment.com' },
+      { protocol: 'https', hostname: 'newkansite.pp.ua' },
+      { protocol: 'https', hostname: 'www.newkansite.pp.ua' },
+      { protocol: 'https', hostname: 'adminkansite.pp.ua' }
+    ]
   },
   webpack(config) {
     config.module.rules.push({
@@ -132,4 +138,4 @@ const nextConfig = {
   }
 }
 
-module.exports = withPlugins([nextTranslate], nextConfig)
+module.exports = nextTranslate(nextConfig)

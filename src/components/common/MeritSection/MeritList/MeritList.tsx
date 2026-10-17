@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import Image from 'next/image'
+import Image from 'next/legacy/image'
 import { styled } from 'stitches.config'
 
 export const MeritList: FC<{ merits: string[] }> = ({ merits }) => {

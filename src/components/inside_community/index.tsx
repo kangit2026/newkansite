@@ -1,6 +1,6 @@
 import { AdaptiveImage, ThemingMode } from '@components/common/AdaptiveImage'
 import { useTheme } from 'next-themes'
-import Image from 'next/image'
+import Image from 'next/legacy/image'
 import { usePersistLocale } from '@utils/hooks/use-persist-locale'
 import type { InsideCommunityContent } from '@utils/api/insideCommunity'
 import { renderBlocks } from './BlockRenderer'

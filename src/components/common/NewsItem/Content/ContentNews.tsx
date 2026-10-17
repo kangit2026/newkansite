@@ -1,7 +1,7 @@
 import { Col } from '@ui'
 import React, { FC } from 'react'
 import { styled, css } from 'stitches.config'
-import Image from 'next/image'
+import Image from 'next/legacy/image'
 import Link from 'next/link'
 import { formatLink } from '@utils/helpers'
 import { RichTextContent } from '@components/common/RichTextContent'
@@ -35,8 +35,8 @@ export const ContentNews: FC<{
                   <Image
                     src="/newsItem/link.svg"
                     alt=""
-                    width="14px"
-                    height="14px"
+                    width={14}
+                    height={14}
                   />
 
                   <LinkText>{formatLink(link)}</LinkText>

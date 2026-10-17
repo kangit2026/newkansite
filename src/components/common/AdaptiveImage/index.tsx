@@ -104,7 +104,7 @@ export const AdaptiveImage = forwardRef<
             : src?.default
 
         const additionalInfo =
-          browser.name == 'safari' ? `?${Math.random()}` : ''
+          browser?.name == 'safari' ? `?${Math.random()}` : ''
 
         sources[bp] = `${fileSrc}${additionalInfo}#${themeKey}`
       })

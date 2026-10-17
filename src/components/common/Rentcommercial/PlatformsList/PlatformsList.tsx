@@ -1,4 +1,4 @@
-import Image from 'next/image'
+import Image from 'next/legacy/image'
 import React, { FC } from 'react'
 import { styled, css } from 'stitches.config'
 import useTranslation from 'next-translate/useTranslation'

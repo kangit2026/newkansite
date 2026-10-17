@@ -1,5 +1,5 @@
 import React, { FC, useRef } from 'react'
-import Image from 'next/image'
+import Image from 'next/legacy/image'
 import More from '@assets/home/more.svg?svgr'
 import {
   AdaptiveImage,
